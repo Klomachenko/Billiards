@@ -1,7 +1,12 @@
 import './App.css';
+import LoginPage from './pages/LoginPage.tsx';
 
 function App() {
-  return <></>;
+  return (
+    <>
+      <LoginPage />
+    </>
+  );
 }
 
 export default App;
