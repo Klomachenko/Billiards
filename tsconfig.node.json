@@ -16,7 +16,11 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    /* 추가된 설정 */
+    "composite": true, // composite 설정 추가
+    "outDir": "./dist/node" // 컴파일된 파일이 저장될 디렉토리 설정
   },
-  "include": ["vite.config.ts"]
+  "include": ["vite.config.ts", "src/**/*"]
 }

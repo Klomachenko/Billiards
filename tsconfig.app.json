@@ -8,17 +8,20 @@
 
     /* Bundler mode */
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
-    "noEmit": true,
+    "noEmit": false, // noEmit을 false로 유지
     "jsx": "react-jsx",
 
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    /* 추가된 설정 */
+    "composite": true, // composite 설정 추가
+    "outDir": "./dist/app" // 컴파일된 파일이 저장될 디렉토리 설정
   },
-  "include": ["src"]
+  "include": ["src/**/*"]
 }
