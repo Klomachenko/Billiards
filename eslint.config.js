@@ -60,6 +60,7 @@ export default [
     rules: {
       ...pluginReact.configs.flat.recommended.rules,
       "react/react-in-jsx-scope": "off", // 추가
+      'react/prop-types': 'off', // prop-types 규칙 비활성화
     },
   },
   {
