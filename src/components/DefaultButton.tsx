@@ -2,7 +2,8 @@ import styled from '@emotion/styled';
 
 const MainButton = styled.button`
   width: 100%;
-  height: 2.25rem;
+  padding: 0.5rem;
+  font-size: 1rem;
   background-color: black;
   cursor: pointer;
   color: white;

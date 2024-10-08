@@ -5,7 +5,9 @@ const AuthInput = styled.input`
   border: 1px solid lightgray;
   border-radius: 0.3125rem;
   width: 100%;
-  height: 2.25rem;
+  padding: 0.5rem;
+  font-size: 1rem;
+  /* height: 2.25rem; */
 `;
 
 interface TextInputProps {
