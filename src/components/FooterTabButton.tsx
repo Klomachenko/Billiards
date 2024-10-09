@@ -17,7 +17,12 @@ const SubText = styled.p`
   font-weight: 400;
 `;
 
-const MatchingListButton = ({ type, text }) => {
+interface FooterTabButtonProps {
+  type: string;
+  text: string;
+}
+
+const FooterTabButton = ({ type, text }: FooterTabButtonProps) => {
   return (
     <ButtonBox>
       {type === 'list' ? (
@@ -30,4 +35,4 @@ const MatchingListButton = ({ type, text }) => {
   );
 };
 
-export default MatchingListButton;
+export default FooterTabButton;

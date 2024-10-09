@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import MatchingUser from '../components/MatchingUser.tsx';
-import MatchingListButton from '../components/MatchingListButton.tsx';
+import FooterTabButton from '../components/FooterTabButton.tsx';
 
 const Container = styled.div`
   display: flex;
@@ -78,8 +78,8 @@ const MatchingListPage = () => {
         {/* </UserBox> */}
       </Box>
       <ButtonBox>
-        <MatchingListButton text={'매칭 대기 목록'} type={'list'} />
-        <MatchingListButton text={'채팅창'} type={'chat'} />
+        <FooterTabButton text={'매칭 대기 목록'} type={'list'} />
+        <FooterTabButton text={'채팅창'} type={'chat'} />
       </ButtonBox>
     </Container>
   );
