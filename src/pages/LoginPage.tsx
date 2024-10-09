@@ -9,6 +9,8 @@ const Container = styled.div`
   flex-direction: column;
   height: 100vh;
   width: 100%;
+  max-width: 30rem;
+  margin: 0 auto;
 `;
 
 const Box = styled.div`

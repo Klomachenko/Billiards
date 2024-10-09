@@ -5,6 +5,7 @@ const CircleButton = styled.button`
   padding: 0.45rem;
   border-radius: 50%;
   border: 1px solid black;
+  cursor: pointer;
 `;
 
 const SubText = styled.p`

@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import MatchingUser from '../components/MatchingUser.tsx';
+import MatchingListButton from '../components/MatchingListButton.tsx';
 
 const Container = styled.div`
   display: flex;
@@ -8,6 +9,8 @@ const Container = styled.div`
   flex-direction: column;
   height: 100vh;
   width: 100%;
+  max-width: 30rem;
+  margin: 0 auto;
   position: relative;
 `;
 
@@ -74,7 +77,10 @@ const MatchingListPage = () => {
         <MatchingUser />
         {/* </UserBox> */}
       </Box>
-      <ButtonBox></ButtonBox>
+      <ButtonBox>
+        <MatchingListButton text={'매칭 대기 목록'} type={'list'} />
+        <MatchingListButton text={'채팅창'} type={'chat'} />
+      </ButtonBox>
     </Container>
   );
 };
