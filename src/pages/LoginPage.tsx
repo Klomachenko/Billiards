@@ -55,16 +55,16 @@ const LoginPage = () => {
       <Box>
         <InputBox>
           <SubText>Id</SubText>
-          <TextInput placeholder={'아이디를 입력하세요'} />
+          <TextInput placeholder='아이디를 입력하세요' />
         </InputBox>
 
         <InputBox>
           <SubText>Password</SubText>
-          <TextInput placeholder={'비밀번호를 입력하세요'} />
+          <TextInput placeholder='비밀번호를 입력하세요' />
         </InputBox>
 
         <ButtonBox>
-          <DefaultButton text={'Sign In'} />
+          <DefaultButton text='Sign In' />
         </ButtonBox>
       </Box>
     </Container>

@@ -78,8 +78,8 @@ const MatchingListPage = () => {
         {/* </UserBox> */}
       </Box>
       <ButtonBox>
-        <FooterTabButton text={'매칭 대기 목록'} type={'list'} />
-        <FooterTabButton text={'채팅창'} type={'chat'} />
+        <FooterTabButton text='매칭 대기 목록' type='list' />
+        <FooterTabButton text='채팅창' type='chat' />
       </ButtonBox>
     </Container>
   );
