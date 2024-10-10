@@ -8,11 +8,10 @@ const Container = styled.div`
   justify-content: center;
   flex-direction: column;
   height: 100vh;
-  max-height: 932px;
-  max-width: 480px;
+  width: 100%;
+  max-width: 30rem;
   margin: 0 auto;
   position: relative;
-  border: 1px solid black;
 `;
 
 const TextBox = styled.div`
@@ -29,16 +28,13 @@ const MainText = styled.h1`
 `;
 
 const Box = styled.div`
-  box-sizing: border-box;
-  width: 100%;
-  padding: 0 10%;
+  width: 80%;
   height: 70%;
   display: flex;
   overflow-y: auto;
   flex-direction: column;
   align-items: flex-start;
   gap: 0.25rem;
-  border: 1px solid black;
 
   &::-webkit-scrollbar {
     display: none;
