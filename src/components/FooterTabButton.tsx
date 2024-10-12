@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import React from 'react';
 
 const ButtonBox = styled.div`
   display: flex;
@@ -18,18 +17,14 @@ const SubText = styled.p`
 `;
 
 interface FooterTabButtonProps {
-  type: string;
+  Icon: React.ElementType;
   text: string;
 }
 
-const FooterTabButton = ({ type, text }: FooterTabButtonProps) => {
+const FooterTabButton = ({ text, Icon }: FooterTabButtonProps) => {
   return (
     <ButtonBox>
-      {type === 'list' ? (
-        <FormatListBulletedIcon fontSize='large' />
-      ) : (
-        <ChatBubbleOutlineIcon fontSize='large' />
-      )}
+      <Icon fontSize='large' />
       <SubText>{text}</SubText>
     </ButtonBox>
   );
