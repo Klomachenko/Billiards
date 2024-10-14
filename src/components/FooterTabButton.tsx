@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
-const ButtonBox = styled.div`
+const ButtonBox = styled(NavLink)`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,6 +10,7 @@ const ButtonBox = styled.div`
   width: 50%;
   border: 1px solid black;
   cursor: pointer;
+  text-decoration: none;
 `;
 
 const SubText = styled.p`
@@ -24,14 +25,8 @@ interface FooterTabButtonProps {
 }
 
 const FooterTabButton = ({ text, Icon, url }: FooterTabButtonProps) => {
-  const navigate = useNavigate();
-
-  const handleClick = () => {
-    navigate(`/${url}`);
-  };
-
   return (
-    <ButtonBox onClick={handleClick}>
+    <ButtonBox to={`/${url}`}>
       <Icon fontSize='large' />
       <SubText>{text}</SubText>
     </ButtonBox>
