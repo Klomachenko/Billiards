@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import MatchingUser from '../components/MatchingUser.tsx';
 import FooterTabButton from '../components/FooterTabButton.tsx';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 
 const Container = styled.div`
   display: flex;
@@ -82,8 +84,16 @@ const MatchingListPage = () => {
         {/* </UserBox> */}
       </Box>
       <ButtonBox>
-        <FooterTabButton text='매칭 대기 목록' type='list' />
-        <FooterTabButton text='채팅창' type='chat' />
+        <FooterTabButton
+          text='매칭 대기 목록'
+          Icon={FormatListBulletedIcon}
+          url='matching'
+        />
+        <FooterTabButton
+          text='채팅창'
+          Icon={ChatBubbleOutlineIcon}
+          url='chat'
+        />
       </ButtonBox>
     </Container>
   );

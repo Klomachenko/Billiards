@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 
-const ButtonBox = styled.div`
+const ButtonBox = styled(NavLink)`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,6 +10,7 @@ const ButtonBox = styled.div`
   width: 50%;
   border: 1px solid black;
   cursor: pointer;
+  text-decoration: none;
 `;
 
 const SubText = styled.p`
@@ -18,18 +19,15 @@ const SubText = styled.p`
 `;
 
 interface FooterTabButtonProps {
-  type: string;
+  Icon: React.ElementType;
   text: string;
+  url: string;
 }
 
-const FooterTabButton = ({ type, text }: FooterTabButtonProps) => {
+const FooterTabButton = ({ text, Icon, url }: FooterTabButtonProps) => {
   return (
-    <ButtonBox>
-      {type === 'list' ? (
-        <FormatListBulletedIcon fontSize='large' />
-      ) : (
-        <ChatBubbleOutlineIcon fontSize='large' />
-      )}
+    <ButtonBox to={`/${url}`}>
+      <Icon fontSize='large' />
       <SubText>{text}</SubText>
     </ButtonBox>
   );
