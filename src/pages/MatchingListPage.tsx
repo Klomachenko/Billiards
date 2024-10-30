@@ -3,6 +3,7 @@ import MatchingUser from '../components/MatchingUser.tsx';
 import FooterTabButton from '../components/FooterTabButton.tsx';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import JoinQueueButton from '../components/JoinQueueButton.tsx';
 
 const Container = styled.div`
   display: flex;
@@ -56,6 +57,14 @@ const ButtonBox = styled.div`
   display: flex;
 `;
 
+const JoinButtonBox = styled.div`
+  position: absolute;
+  bottom: 4rem;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  z-index: 1;
+`;
+
 const MatchingListPage = () => {
   return (
     <Container>
@@ -84,6 +93,10 @@ const MatchingListPage = () => {
         {/* </UserBox> */}
       </Box>
       <ButtonBox>
+        <JoinButtonBox>
+          <JoinQueueButton />
+        </JoinButtonBox>
+
         <FooterTabButton
           text='매칭 대기 목록'
           Icon={FormatListBulletedIcon}
