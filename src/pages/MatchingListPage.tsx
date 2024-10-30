@@ -15,7 +15,6 @@ const Container = styled.div`
   max-width: 480px;
   margin: 0 auto;
   position: relative;
-  border: 1px solid black;
 `;
 
 const TextBox = styled.div`
@@ -40,8 +39,8 @@ const Box = styled.div`
   overflow-y: auto;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.25rem;
-  border: 1px solid black;
+  gap: 1rem;
+  /* border: 1px solid black; */
 
   &::-webkit-scrollbar {
     display: none;
@@ -51,7 +50,7 @@ const Box = styled.div`
 const ButtonBox = styled.div`
   width: 100%;
   height: 4.5rem;
-  background-color: rgb(243, 237, 247, 100);
+  background-color: #8dcf99;
   position: absolute;
   bottom: 0;
   display: flex;
@@ -73,10 +72,6 @@ const MatchingListPage = () => {
       </TextBox>
       <Box>
         {/* <UserBox> */}
-        <MatchingUser />
-        <MatchingUser />
-        <MatchingUser />
-        <MatchingUser />
         <MatchingUser />
         <MatchingUser />
         <MatchingUser />

@@ -8,14 +8,15 @@ const ButtonBox = styled(NavLink)`
   align-items: center;
   justify-content: center;
   width: 50%;
-  border: 1px solid black;
   cursor: pointer;
   text-decoration: none;
+  color: black;
 `;
 
 const SubText = styled.p`
-  font-size: 1rem;
+  font-size: 0.75rem;
   font-weight: 400;
+  margin-top: 0.5rem;
 `;
 
 interface FooterTabButtonProps {
@@ -27,7 +28,7 @@ interface FooterTabButtonProps {
 const FooterTabButton = ({ text, Icon, url }: FooterTabButtonProps) => {
   return (
     <ButtonBox to={`/${url}`}>
-      <Icon fontSize='large' />
+      <Icon fontSize='medium' />
       <SubText>{text}</SubText>
     </ButtonBox>
   );
