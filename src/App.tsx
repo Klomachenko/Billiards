@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import MatchingListPage from './pages/MatchingListPage.tsx';
 import LoginPage from './pages/LoginPage.tsx';
 import ChattingPage from './pages/ChattingPage.tsx';
+import JoinQueueButton from './components/JoinQueueButton.tsx';
 
 function App() {
   return (
@@ -15,6 +16,8 @@ function App() {
           <Route path='/chat' element={<ChattingPage />} />
         </Routes>
       </BrowserRouter>
+
+      <JoinQueueButton />
 
       {/* <LoginPage /> */}
       {/* <MatchingListPage /> */}
