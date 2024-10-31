@@ -1,6 +1,5 @@
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-// import LoginPage from './pages/LoginPage.tsx';
 import MatchingListPage from './pages/MatchingListPage.tsx';
 import LoginPage from './pages/LoginPage.tsx';
 import ChattingPage from './pages/ChattingPage.tsx';
@@ -15,7 +14,6 @@ function App() {
           <Route path='/chat' element={<ChattingPage />} />
         </Routes>
       </BrowserRouter>
-
       {/* <LoginPage /> */}
       {/* <MatchingListPage /> */}
     </>

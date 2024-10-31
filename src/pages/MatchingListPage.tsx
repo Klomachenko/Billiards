@@ -3,6 +3,7 @@ import MatchingUser from '../components/MatchingUser.tsx';
 import FooterTabButton from '../components/FooterTabButton.tsx';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import JoinQueueButton from '../components/JoinQueueButton.tsx';
 
 const Container = styled.div`
   display: flex;
@@ -14,7 +15,6 @@ const Container = styled.div`
   max-width: 480px;
   margin: 0 auto;
   position: relative;
-  border: 1px solid black;
 `;
 
 const TextBox = styled.div`
@@ -39,8 +39,8 @@ const Box = styled.div`
   overflow-y: auto;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.25rem;
-  border: 1px solid black;
+  gap: 1rem;
+  /* border: 1px solid black; */
 
   &::-webkit-scrollbar {
     display: none;
@@ -50,10 +50,18 @@ const Box = styled.div`
 const ButtonBox = styled.div`
   width: 100%;
   height: 4.5rem;
-  background-color: rgb(243, 237, 247, 100);
+  background-color: #8dcf99;
   position: absolute;
   bottom: 0;
   display: flex;
+`;
+
+const JoinButtonBox = styled.div`
+  position: absolute;
+  bottom: 4rem;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  z-index: 1;
 `;
 
 const MatchingListPage = () => {
@@ -77,13 +85,13 @@ const MatchingListPage = () => {
         <MatchingUser />
         <MatchingUser />
         <MatchingUser />
-        <MatchingUser />
-        <MatchingUser />
-        <MatchingUser />
-        <MatchingUser />
         {/* </UserBox> */}
       </Box>
       <ButtonBox>
+        <JoinButtonBox>
+          <JoinQueueButton />
+        </JoinButtonBox>
+
         <FooterTabButton
           text='매칭 대기 목록'
           Icon={FormatListBulletedIcon}
