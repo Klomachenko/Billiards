@@ -59,7 +59,7 @@ const ChattingPage = () => {
   return (
     <Container>
       <TextBox>
-        <MainText>매칭 대기 목록</MainText>
+        <MainText>채팅 목록</MainText>
       </TextBox>
       <Box>
         {/* <UserBox> */}
