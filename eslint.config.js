@@ -10,7 +10,10 @@ export default [
   {
     files: ["**/*.{js,mjs,cjs,ts,jsx,tsx}"],
     languageOptions: {
-      globals: globals.browser,
+      globals: {
+        ...globals.browser,
+        process: 'readonly', // process를 전역으로 추가
+      },
       parser: tsParser,
       parserOptions: {
         ecmaVersion: "latest",
