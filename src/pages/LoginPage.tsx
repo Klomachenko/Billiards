@@ -1,6 +1,8 @@
+import axios from 'axios';
 import styled from '@emotion/styled';
 import TextInput from '../components/TextInput.tsx';
 import DefaultButton from '../components/DefaultButton.tsx';
+import { useState } from 'react';
 
 const Container = styled.div`
   display: flex;
@@ -49,22 +51,54 @@ const ButtonBox = styled.div`
 `;
 
 const LoginPage = () => {
+  const [uid, setUid] = useState('');
+  const [password, setPassword] = useState('');
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [error, setError] = useState('');
+
+  const handleLogin = async () => {
+    try {
+      const response = await axios.post('/users/login', {
+        uid,
+        password,
+      });
+
+      if (response.data.success) {
+        console.log('로그인 성공', response.data.response);
+      } else {
+        setError(response.data.error?.message || '로그인 실패');
+      }
+    } catch (err) {
+      setError('서버 오류 발생, 재시도 바람');
+      console.error(err);
+    }
+  };
+
   return (
     <Container>
       <MainText>로그인</MainText>
       <Box>
         <InputBox>
           <SubText>Id</SubText>
-          <TextInput placeholder='아이디를 입력하세요' />
+          <TextInput
+            placeholder='아이디를 입력하세요'
+            value={uid}
+            onChange={(e) => setUid(e.target.value)}
+          />
         </InputBox>
 
         <InputBox>
           <SubText>Password</SubText>
-          <TextInput placeholder='비밀번호를 입력하세요' />
+          <TextInput
+            placeholder='비밀번호를 입력하세요'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            type='password'
+          />
         </InputBox>
 
         <ButtonBox>
-          <DefaultButton text='Sign In' />
+          <DefaultButton text='Sign In' onClick={handleLogin} />
         </ButtonBox>
       </Box>
     </Container>

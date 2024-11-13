@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import React from 'react';
 
 const MainButton = styled.button`
   width: 100%;
@@ -20,10 +21,11 @@ const MainButton = styled.button`
 
 interface ButtonProps {
   text: string;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const DefaultButton = ({ text }: ButtonProps) => {
-  return <MainButton>{text}</MainButton>;
+const DefaultButton = ({ text, onClick }: ButtonProps) => {
+  return <MainButton onClick={onClick}>{text}</MainButton>;
 };
 
 export default DefaultButton;

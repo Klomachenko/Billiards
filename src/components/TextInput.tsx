@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import React from 'react';
 
 const AuthInput = styled.input`
   box-sizing: border-box;
@@ -12,10 +13,20 @@ const AuthInput = styled.input`
 
 interface TextInputProps {
   placeholder: string;
+  type?: string;
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const TextInput = ({ placeholder }: TextInputProps) => {
-  return <AuthInput placeholder={placeholder} />;
+const TextInput = ({ placeholder, type, value, onChange }: TextInputProps) => {
+  return (
+    <AuthInput
+      placeholder={placeholder}
+      type={type}
+      value={value}
+      onChange={onChange}
+    />
+  );
 };
 
 export default TextInput;
