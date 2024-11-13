@@ -4,7 +4,6 @@ import FooterTabButton from '../components/FooterTabButton.tsx';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import JoinQueueButton from '../components/JoinQueueButton.tsx';
-import { useState } from 'react';
 
 const Container = styled.div`
   display: flex;
@@ -41,7 +40,6 @@ const Box = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 1rem;
-  /* border: 1px solid black; */
 
   &::-webkit-scrollbar {
     display: none;
@@ -66,8 +64,6 @@ const JoinButtonBox = styled.div`
 `;
 
 const MatchingListPage = () => {
-  console.log(localStorage.getItem('userNumber'));
-
   return (
     <Container>
       <TextBox>
