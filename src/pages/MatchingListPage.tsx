@@ -40,7 +40,6 @@ const Box = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 1rem;
-  /* border: 1px solid black; */
 
   &::-webkit-scrollbar {
     display: none;

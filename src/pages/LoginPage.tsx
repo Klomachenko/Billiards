@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import TextInput from '../components/TextInput.tsx';
 import DefaultButton from '../components/DefaultButton.tsx';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -50,7 +51,18 @@ const ButtonBox = styled.div`
   margin-top: auto;
 `;
 
+interface LoginResponse {
+  success: boolean;
+  response?: {
+    id: string;
+  };
+  error?: {
+    message: string;
+  };
+}
+
 const LoginPage = () => {
+  const navigate = useNavigate();
   const [uid, setUid] = useState('');
   const [password, setPassword] = useState('');
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -58,13 +70,15 @@ const LoginPage = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('/users/login', {
+      const response = await axios.post<LoginResponse>('/users/login', {
         uid,
         password,
       });
 
       if (response.data.success) {
-        console.log('로그인 성공', response.data.response);
+        console.log('로그인 성공', response.data.response.id);
+        localStorage.setItem('userNumber', response.data.response.id);
+        navigate('/matching');
       } else {
         setError(response.data.error?.message || '로그인 실패');
       }
