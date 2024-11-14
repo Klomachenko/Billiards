@@ -51,6 +51,16 @@ const ButtonBox = styled.div`
   margin-top: auto;
 `;
 
+interface LoginResponse {
+  success: boolean;
+  response?: {
+    id: string;
+  };
+  error?: {
+    message: string;
+  };
+}
+
 const LoginPage = () => {
   const navigate = useNavigate();
   const [uid, setUid] = useState('');
@@ -60,7 +70,7 @@ const LoginPage = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post('/users/login', {
+      const response = await axios.post<LoginResponse>('/users/login', {
         uid,
         password,
       });
