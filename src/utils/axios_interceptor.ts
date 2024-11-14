@@ -5,7 +5,7 @@ const api = axios.create({
   timeout: 1000,
 });
 
-axios.interceptors.request.use(
+api.interceptors.request.use(
   (config) => {
     // 요청이 전달되기 전에 작업 수행 -> 여기에 member pk값을 저장하면 될거같다!
     const memberPK = localStorage.getItem('userNumber');
