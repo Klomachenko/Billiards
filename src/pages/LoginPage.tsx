@@ -1,9 +1,9 @@
-import axios from 'axios';
 import styled from '@emotion/styled';
 import TextInput from '../components/TextInput.tsx';
 import DefaultButton from '../components/DefaultButton.tsx';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import api from '../utils/axios_interceptor.ts';
 
 const Container = styled.div`
   display: flex;
@@ -54,7 +54,7 @@ const ButtonBox = styled.div`
 interface LoginResponse {
   success: boolean;
   response?: {
-    id: string;
+    userPk: string;
   };
   error?: {
     message: string;
@@ -70,14 +70,17 @@ const LoginPage = () => {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post<LoginResponse>('/users/login', {
+      const response = await api.post<LoginResponse>('/users/login', {
         uid,
         password,
       });
 
       if (response.data.success) {
-        console.log('로그인 성공', response.data.response.id);
-        localStorage.setItem('userNumber', response.data.response.id);
+        console.log('로그인 성공', response.data.response);
+        localStorage.setItem(
+          'userNumber',
+          response.data.response.userPk.toString()
+        );
         navigate('/matching');
       } else {
         setError(response.data.error?.message || '로그인 실패');

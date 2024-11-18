@@ -69,23 +69,7 @@ const MatchingListPage = () => {
       <TextBox>
         <MainText>매칭 대기 목록</MainText>
       </TextBox>
-      <Box>
-        {/* <UserBox> */}
-        <MatchingUser />
-        <MatchingUser />
-        <MatchingUser />
-        <MatchingUser />
-        <MatchingUser />
-        <MatchingUser />
-        <MatchingUser />
-        <MatchingUser />
-        <MatchingUser />
-        <MatchingUser />
-        <MatchingUser />
-        <MatchingUser />
-        <MatchingUser />
-        {/* </UserBox> */}
-      </Box>
+      <Box></Box>
       <ButtonBox>
         <JoinButtonBox>
           <JoinQueueButton />
