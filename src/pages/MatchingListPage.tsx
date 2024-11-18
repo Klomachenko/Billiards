@@ -4,6 +4,8 @@ import FooterTabButton from '../components/FooterTabButton.tsx';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import JoinQueueButton from '../components/JoinQueueButton.tsx';
+import { useEffect, useState } from 'react';
+import api from '../utils/axios_interceptor.ts';
 
 const Container = styled.div`
   display: flex;
@@ -64,12 +66,37 @@ const JoinButtonBox = styled.div`
 `;
 
 const MatchingListPage = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [error, setError] = useState('');
+  const [wrokSpaces, setWorkSpaces] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await api.get('/workspaces');
+        console.log('요청 성공', response.data.response);
+        setWorkSpaces(response.data.response);
+      } catch (err) {
+        setError('서버 오류 발생, 재시도 바람');
+        console.error(err);
+      }
+    };
+    fetchData();
+  }, []);
+
   return (
     <Container>
       <TextBox>
         <MainText>매칭 대기 목록</MainText>
       </TextBox>
-      <Box></Box>
+      <Box>
+        {wrokSpaces?.map((workSpace) => (
+          <MatchingUser
+            creatorUid={workSpace.creatorUid}
+            key={workSpace.workspaceId}
+          />
+        ))}
+      </Box>
       <ButtonBox>
         <JoinButtonBox>
           <JoinQueueButton />

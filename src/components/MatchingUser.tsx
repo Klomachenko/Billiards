@@ -17,11 +17,15 @@ const SubText = styled.p`
   flex-grow: 1;
 `;
 
-const MatchingUser = () => {
+interface MatchingUserProps {
+  creatorUid: string;
+}
+
+const MatchingUser = ({ creatorUid }: MatchingUserProps) => {
   return (
     <UserBox>
       <AccountCircleIcon fontSize='large' />
-      <SubText>사용자 ID</SubText>
+      <SubText>{creatorUid}</SubText>
       <MatchingButton />
     </UserBox>
   );
