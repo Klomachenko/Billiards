@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import React from 'react';
 
 const JoinButton = styled.button`
   height: 3.25rem;
@@ -16,9 +17,13 @@ const SubText = styled.p`
   margin: 0;
 `;
 
-const JoinQueueButton = () => {
+interface JoinQueueButtonProps {
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
+}
+
+const JoinQueueButton = ({ onClick }: JoinQueueButtonProps) => {
   return (
-    <JoinButton>
+    <JoinButton onClick={onClick}>
       <SubText>+</SubText>
     </JoinButton>
   );
