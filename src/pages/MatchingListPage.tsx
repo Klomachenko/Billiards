@@ -71,7 +71,7 @@ const MatchingListPage = () => {
   const [wrokSpaces, setWorkSpaces] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const getMatchingList = async () => {
       try {
         const response = await api.get('/workspaces');
         console.log('요청 성공', response.data.response);
@@ -81,7 +81,7 @@ const MatchingListPage = () => {
         console.error(err);
       }
     };
-    fetchData();
+    getMatchingList();
   }, []);
 
   return (
