@@ -68,19 +68,31 @@ const JoinButtonBox = styled.div`
 const MatchingListPage = () => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [error, setError] = useState('');
-  const [wrokSpaces, setWorkSpaces] = useState([]);
+  const [workSpaces, setWorkSpaces] = useState([]);
+
+  const getMatchingList = async () => {
+    try {
+      const response = await api.get('/workspaces');
+      console.log('요청 성공', response.data.response);
+      setWorkSpaces(response.data.response);
+    } catch (err) {
+      setError('서버 오류 발생, 재시도 바람');
+      console.error(err);
+    }
+  };
+
+  const createMatch = async () => {
+    try {
+      const joinResponse = await api.post('/workspace');
+      console.log('매칭 생성 요청 성공', joinResponse.data);
+      getMatchingList();
+    } catch (err) {
+      setError('서버 오류 발생, 재시도 바람');
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
-    const getMatchingList = async () => {
-      try {
-        const response = await api.get('/workspaces');
-        console.log('요청 성공', response.data.response);
-        setWorkSpaces(response.data.response);
-      } catch (err) {
-        setError('서버 오류 발생, 재시도 바람');
-        console.error(err);
-      }
-    };
     getMatchingList();
   }, []);
 
@@ -90,7 +102,7 @@ const MatchingListPage = () => {
         <MainText>매칭 대기 목록</MainText>
       </TextBox>
       <Box>
-        {wrokSpaces?.map((workSpace) => (
+        {workSpaces?.map((workSpace) => (
           <MatchingUser
             creatorUid={workSpace.creatorUid}
             key={workSpace.workspaceId}
@@ -99,7 +111,11 @@ const MatchingListPage = () => {
       </Box>
       <ButtonBox>
         <JoinButtonBox>
-          <JoinQueueButton />
+          <JoinQueueButton
+            onClick={() => {
+              createMatch();
+            }}
+          />
         </JoinButtonBox>
 
         <FooterTabButton
