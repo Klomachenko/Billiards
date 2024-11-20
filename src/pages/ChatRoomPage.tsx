@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import SendIcon from '@mui/icons-material/SendOutlined';
 import OutIcon from '@mui/icons-material/West';
+import { useParams } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -74,7 +75,11 @@ const SendButtonBox = styled.div`
   justify-content: center;
 `;
 
+console.log('ChatRoomPage 렌더링됨');
+
 const ChatRoomPage = () => {
+  const { roomNumber } = useParams();
+  console.log('현재 roomNumber:', roomNumber);
   return (
     <Container>
       <TextBox>

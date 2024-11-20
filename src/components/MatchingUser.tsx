@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MatchingButton from './MatchingButton.tsx';
+import { useNavigate } from 'react-router-dom';
 
 const UserBox = styled.div`
   display: flex;
@@ -19,14 +20,22 @@ const SubText = styled.p`
 
 interface MatchingUserProps {
   creatorUid: string;
+  roomNumber: number;
 }
 
-const MatchingUser = ({ creatorUid }: MatchingUserProps) => {
+const MatchingUser = ({ creatorUid, roomNumber }: MatchingUserProps) => {
+  const navigate = useNavigate();
+
+  const createChatroom = () => {
+    console.log('채팅방 넘버', roomNumber);
+    navigate(`/chatroom/${roomNumber}`);
+  };
+
   return (
     <UserBox>
       <AccountCircleIcon fontSize='large' />
       <SubText>{creatorUid}</SubText>
-      <MatchingButton />
+      <MatchingButton onClick={createChatroom} />
     </UserBox>
   );
 };

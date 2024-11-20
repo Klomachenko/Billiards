@@ -106,6 +106,7 @@ const MatchingListPage = () => {
           <MatchingUser
             creatorUid={workSpace.creatorUid}
             key={workSpace.workspaceId}
+            roomNumber={workSpace.workspaceId}
           />
         ))}
       </Box>
