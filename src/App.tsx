@@ -13,7 +13,7 @@ function App() {
           <Route path='/matching' element={<MatchingListPage />} />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/chat' element={<ChattingPage />} />
-          <Route path='/chatroom/:roomNumber' element={<ChatRoomPage />} />
+          <Route path='/chatroom/:chatRoomId' element={<ChatRoomPage />} />
         </Routes>
       </BrowserRouter>
       {/* <LoginPage /> */}

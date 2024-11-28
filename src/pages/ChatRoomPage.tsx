@@ -75,11 +75,10 @@ const SendButtonBox = styled.div`
   justify-content: center;
 `;
 
-console.log('ChatRoomPage 렌더링됨');
-
 const ChatRoomPage = () => {
-  const { roomNumber } = useParams();
-  console.log('현재 roomNumber:', roomNumber);
+  const { chatRoomId } = useParams();
+  console.log('현재 chatRoomId:', chatRoomId);
+
   return (
     <Container>
       <TextBox>
