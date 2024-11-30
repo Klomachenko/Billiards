@@ -73,7 +73,7 @@ const MatchingListPage = () => {
   const getMatchingList = async () => {
     try {
       const response = await api.get('/workspaces');
-      console.log('요청 성공', response.data.response);
+      console.log('workspaces 목록 불러오기 성공', response.data.response);
       setWorkSpaces(response.data.response);
     } catch (err) {
       setError('서버 오류 발생, 재시도 바람');
@@ -106,6 +106,7 @@ const MatchingListPage = () => {
           <MatchingUser
             creatorUid={workSpace.creatorUid}
             key={workSpace.workspaceId}
+            workspaceId={workSpace.workspaceId}
           />
         ))}
       </Box>

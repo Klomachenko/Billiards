@@ -2,6 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 import SendIcon from '@mui/icons-material/SendOutlined';
 import OutIcon from '@mui/icons-material/West';
+import { useParams } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -75,6 +76,9 @@ const SendButtonBox = styled.div`
 `;
 
 const ChatRoomPage = () => {
+  const { chatRoomId } = useParams();
+  console.log('현재 chatRoomId:', chatRoomId);
+
   return (
     <Container>
       <TextBox>

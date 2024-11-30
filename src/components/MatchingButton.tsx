@@ -14,9 +14,9 @@ const SubText = styled.p`
   margin: 0;
 `;
 
-const MatchingButton = () => {
+const MatchingButton = ({ onClick }) => {
   return (
-    <CircleButton>
+    <CircleButton onClick={onClick}>
       <SubText>매칭</SubText>
     </CircleButton>
   );
