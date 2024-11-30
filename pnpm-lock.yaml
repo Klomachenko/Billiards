@@ -5,6 +5,7 @@ specifiers:
   '@emotion/styled': ^11.13.0
   '@mui/icons-material': ^6.1.2
   '@mui/material': ^6.1.2
+  '@stomp/stompjs': ^7.0.0
   '@types/react': ^18.3.10
   '@types/react-dom': ^18.3.0
   '@typescript-eslint/eslint-plugin': ^8.8.0
@@ -28,17 +29,20 @@ specifiers:
   react-router-dom: ^6.27.0
   typescript: ^5.5.3
   vite: ^5.4.8
+  ws: ^8.18.0
 
 dependencies:
   '@emotion/react': 11.13.3_ryhct6r6jz2fex4xfo2quarxhi
   '@emotion/styled': 11.13.0_atxzuhsxmgebcn5rovzhgli26i
   '@mui/icons-material': 6.1.6_snicyw3njp7noyvgztjfuwsvga
   '@mui/material': 6.1.6_7m7hwqlgtmwzz3ioznutzilreq
+  '@stomp/stompjs': 7.0.0
   axios: 1.7.7
   normalize.css: 8.0.1
   react: 18.3.1
   react-dom: 18.3.1_react@18.3.1
   react-router-dom: 6.27.0_nnrd3gsncyragczmpvfhocinkq
+  ws: 8.18.0
 
 devDependencies:
   '@types/react': 18.3.12
@@ -991,6 +995,10 @@ packages:
   /@rtsao/scc/1.1.0:
     resolution: {integrity: sha512-zt6OdqaDoOnJ1ZYsCYGt9YmWzDXl4vQdKTyJev62gFhRGKdx7mcT54V9KIjg+d2wi9EXsPvAPKe7i7WjfVWB8g==}
     dev: true
+
+  /@stomp/stompjs/7.0.0:
+    resolution: {integrity: sha512-fGdq4wPDnSV/KyOsjq4P+zLc8MFWC3lMmP5FBgLWKPJTYcuCbAIrnRGjB7q2jHZdYCOD5vxLuFoKIYLy5/u8Pw==}
+    dev: false
 
   /@swc/core-darwin-arm64/1.7.42:
     resolution: {integrity: sha512-fWhaCs2+8GDRIcjExVDEIfbptVrxDqG8oHkESnXgymmvqTWzWei5SOnPNMS8Q+MYsn/b++Y2bDxkcwmq35Bvxg==}
@@ -3673,6 +3681,19 @@ packages:
   /wrappy/1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
     dev: true
+
+  /ws/8.18.0:
+    resolution: {integrity: sha512-8VbfWfHLbbwu3+N6OKsOMpBdT4kXPDDB9cJk2bJ6mh9ucxdlnNvH1e+roYkKmN9Nxw2yjz7VzeO9oOz2zJ04Pw==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+    dev: false
 
   /y18n/5.0.8:
     resolution: {integrity: sha512-0pfFzegeDWJHJIAmTLRP2DwHjdF5s7jo9tuztdQxAhINCdvS+3nGINqPd00AphqJR/0LhANUS6/+7SCb98YOfA==}
