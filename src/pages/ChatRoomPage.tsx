@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import SendIcon from '@mui/icons-material/SendOutlined';
 import OutIcon from '@mui/icons-material/West';
 import { useParams } from 'react-router-dom';
+import { Client, IFrame, IMessage } from '@stomp/stompjs';
+import { Stomp } from '@stomp/stompjs';
 
 const Container = styled.div`
   display: flex;
@@ -78,6 +80,42 @@ const SendButtonBox = styled.div`
 const ChatRoomPage = () => {
   const { chatRoomId } = useParams();
   console.log('현재 chatRoomId:', chatRoomId);
+  const [stompClient, setStompClient] = useState<Stomp.Client | null>(null);
+
+  useEffect(() => {
+    const stomp = new Client({
+      brokerURL: 'ws://54.221.244.36:8080/chat',
+      debug: (str: string) => {
+        console.log(`STOMP DEBUG: ${str}`);
+      },
+      reconnectDelay: 5000, //자동 재 연결
+      heartbeatIncoming: 4000,
+      heartbeatOutgoing: 4000,
+      onConnect: () => {
+        console.log('STOMP 연결 성공');
+      },
+      onStompError: (frame) => {
+        console.error('STOMP 에러 발생:', frame);
+      },
+    });
+    setStompClient(stomp);
+
+    stomp.onConnect = () => {
+      console.log('STOMP 연결 성공');
+      stomp.subscribe('/topic/chat', (message) => {
+        console.log('메시지 수신:', message.body);
+      });
+      stomp.publish({
+        destination: '/app/chat',
+        body: JSON.stringify({
+          chatRoomId: chatRoomId,
+          message: '테스트 메시지',
+        }),
+      });
+    };
+
+    stomp.activate();
+  }, []);
 
   return (
     <Container>
