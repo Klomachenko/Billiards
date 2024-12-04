@@ -84,7 +84,7 @@ const ChatRoomPage = () => {
 
   useEffect(() => {
     const stomp = new Client({
-      brokerURL: 'ws://54.221.244.36:8080/chat',
+      brokerURL: 'ws://15.164.186.158:8080/chat',
       debug: (str: string) => {
         console.log(`STOMP DEBUG: ${str}`);
       },
@@ -102,11 +102,11 @@ const ChatRoomPage = () => {
 
     stomp.onConnect = () => {
       console.log('STOMP 연결 성공');
-      stomp.subscribe('/topic/chat', (message) => {
+      stomp.subscribe(`/topic/${chatRoomId}`, (message) => {
         console.log('메시지 수신:', message.body);
       });
       stomp.publish({
-        destination: '/app/chat',
+        destination: `/app/${chatRoomId}`,
         body: JSON.stringify({
           chatRoomId: chatRoomId,
           message: '테스트 메시지',
