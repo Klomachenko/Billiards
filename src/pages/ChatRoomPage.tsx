@@ -5,6 +5,7 @@ import OutIcon from '@mui/icons-material/West';
 import { useParams } from 'react-router-dom';
 import { Client, IFrame, IMessage } from '@stomp/stompjs';
 import { Stomp } from '@stomp/stompjs';
+import Message from '../components/Message';
 
 const Container = styled.div`
   display: flex;
@@ -42,6 +43,7 @@ const Box = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 1rem;
+  border: 1px solid black;
 
   &::-webkit-scrollbar {
     display: none;
@@ -123,7 +125,9 @@ const ChatRoomPage = () => {
         <OutIcon fontSize='medium' />
         <MainText>Name</MainText>
       </TextBox>
-      <Box></Box>
+      <Box>
+        <Message />
+      </Box>
       <ChattingInputBox>
         <ChattingInput />
         <SendButtonBox>
