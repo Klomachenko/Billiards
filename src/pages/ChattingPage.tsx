@@ -64,7 +64,8 @@ const ChattingPage = () => {
   const getChattingRoomList = async () => {
     try {
       const response = await api.get('/chattings');
-      console.log('채팅방 목록 불러오기 성공', response.data);
+      console.log('채팅방 목록 불러오기 성공', response.data.response);
+      setChattingRooms(response.data.response);
     } catch (err) {
       setError('서버 오류 발생, 재시도 바람');
       console.error(err);
@@ -81,8 +82,14 @@ const ChattingPage = () => {
         <MainText>채팅 목록</MainText>
       </TextBox>
       <Box>
-        {/* <UserBox> */}
-        {/* </UserBox> */}
+        {chattingRooms?.map((chatRoom) => (
+          <ChattingUser
+            key={chatRoom.chatRoomId}
+            lastMessage={chatRoom.lastMessage}
+            otherPerson={chatRoom.otherPerson}
+            unReadCount={chatRoom.unReadCount}
+          />
+        ))}
       </Box>
       <ButtonBox>
         <FooterTabButton
