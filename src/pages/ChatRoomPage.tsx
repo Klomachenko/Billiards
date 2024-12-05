@@ -81,24 +81,22 @@ const SendButtonBox = styled.div`
 
 const ChatRoomPage = () => {
   const { chatRoomId } = useParams();
+  const navigate = useNavigate();
   const [chat, setChat] = useState('');
   const [messages, setMessages] = useState([]);
   const [error, setError] = useState('');
-  const memberPK = localStorage.getItem('userNumber');
-
   const [stompClient, setStompClient] = useState<Stomp.Client | null>(null);
-
+  const memberPK = localStorage.getItem('userNumber');
   const chatInputRef = useRef<HTMLInputElement | null>(null);
+  const messageEndRef = useRef<HTMLDivElement | null>(null);
 
   const getMessageList = async () => {
     try {
       const response = await api.get(`chattings/${chatRoomId}`);
-      console.log('메세지 리스트 불러오기 성공', response.data);
-
+      // console.log('메세지 리스트 불러오기 성공', response.data);
       const sortedMessages = response.data.response.sort(
         (a, b) => a.chattingId - b.chattingId
       );
-
       setMessages(sortedMessages);
     } catch (err) {
       setError('서버 오류 발생, 재시도 바람');
@@ -108,7 +106,6 @@ const ChatRoomPage = () => {
 
   useEffect(() => {
     getMessageList();
-
     const stomp = new Client({
       brokerURL: 'wss://hyunsolution.duckdns.org/chat',
       debug: (str: string) => {
@@ -125,9 +122,8 @@ const ChatRoomPage = () => {
       },
     });
 
-    // 비동기 함수 호출
     const connectStomp = async () => {
-      await stomp.activate(); // 비동기 함수로 처리
+      await stomp.activate();
       stomp.onConnect = () => {
         console.log('STOMP 연결 성공');
         stomp.subscribe(`/topic/chat/${chatRoomId}`, (message) => {
@@ -139,9 +135,8 @@ const ChatRoomPage = () => {
               sender: receivedMessage.sender,
               message: receivedMessage.message,
               chatRoomId,
-              isOwn: false, // 상대방의 메시지임을 표시
+              isOwn: false,
             },
-
             getMessageList(),
           ]);
         });
@@ -149,15 +144,12 @@ const ChatRoomPage = () => {
     };
 
     connectStomp();
-
     setStompClient(stomp);
 
     return () => {
       stomp.deactivate(); // 정리 함수는 동기적으로 처리
     };
   }, [chatRoomId]);
-
-  const messageEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -169,7 +161,6 @@ const ChatRoomPage = () => {
       sender: memberPK,
       chatRoomId,
     };
-
     if (stompClient) {
       stompClient.publish({
         destination: `/app/chat/${chatRoomId}`,
@@ -179,24 +170,18 @@ const ChatRoomPage = () => {
         },
       });
     }
-
     setMessages((prevMessages) => [
       ...prevMessages,
       { sender: memberPK, message: chat, chatRoomId, isOwn: true },
     ]);
-
-    console.log('메세지 전송 클릭 후', messages);
+    // console.log('메세지 전송 클릭 후', messages);
 
     setChat('');
-
     if (chatInputRef.current) {
       chatInputRef.current.focus();
     }
-
     getMessageList();
   };
-
-  const navigate = useNavigate();
 
   return (
     <Container>

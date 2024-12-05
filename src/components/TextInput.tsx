@@ -8,7 +8,6 @@ const AuthInput = styled.input`
   width: 100%;
   padding: 0.5rem;
   font-size: 1rem;
-  /* height: 2.25rem; */
 `;
 
 interface TextInputProps {

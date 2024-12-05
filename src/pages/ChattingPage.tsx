@@ -59,6 +59,7 @@ const ButtonBox = styled.div`
 `;
 
 const ChattingPage = () => {
+  const navigate = useNavigate();
   const [chattingRooms, setChattingRooms] = useState([]);
   const [error, setError] = useState('');
 
@@ -72,8 +73,6 @@ const ChattingPage = () => {
       console.error(err);
     }
   };
-
-  const navigate = useNavigate();
 
   const enterChat = (chatRoomId: string) => {
     navigate(`/chatroom/${chatRoomId}`);
