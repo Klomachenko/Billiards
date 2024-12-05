@@ -1,23 +1,30 @@
 import styled from '@emotion/styled';
 
-const MessageBox = styled.div`
+interface MessageBoxProps {
+  isMine: boolean;
+}
+
+const MessageBox = styled.div<MessageBoxProps>`
   max-width: 13.75rem;
   min-height: 2.75rem;
-  background-color: #f5f5f5;
+  background-color: ${(props) => (props.isMine ? '#daf5dc' : '#f5f5f5')};
   border-radius: 0.9375rem;
-  padding: 0.5rem 0.7rem;
+  padding: 0.1rem 0.55rem;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  word-break: break-all;
-  overflow-wrap: break-word;
+  justify-content: center;
   line-height: 1.5;
 `;
 
-const Message = () => {
+const memberPK = localStorage.getItem('userNumber');
+
+const Message = ({ sender, content }: { sender: string; content: string }) => {
+  const isMine = sender === memberPK;
   return (
-    <MessageBox>
-      안녕하세요. 반갑습니다. 본인의 대대 점수는 12점입니다. 혹시 점수가 어떻게
-      되시나요?
+    <MessageBox isMine={isMine}>
+      {!isMine && <p>{sender}</p>}
+      <p>{content}</p>
     </MessageBox>
   );
 };

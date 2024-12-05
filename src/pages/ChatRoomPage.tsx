@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import SendIcon from '@mui/icons-material/SendOutlined';
 import OutIcon from '@mui/icons-material/West';
 import { useParams } from 'react-router-dom';
-import { Client, IFrame, IMessage } from '@stomp/stompjs';
+import { Client } from '@stomp/stompjs';
 import { Stomp } from '@stomp/stompjs';
 import Message from '../components/Message';
 
@@ -81,16 +81,19 @@ const SendButtonBox = styled.div`
 
 const ChatRoomPage = () => {
   const { chatRoomId } = useParams();
-  console.log('현재 chatRoomId:', chatRoomId);
+  const [chat, setChat] = useState('');
+  const [messages, setMessages] = useState([]);
+  const memberPK = localStorage.getItem('userNumber');
+
   const [stompClient, setStompClient] = useState<Stomp.Client | null>(null);
 
   useEffect(() => {
     const stomp = new Client({
-      brokerURL: 'ws://15.164.186.158:8080/chat',
+      brokerURL: 'wss://hyunsolution.duckdns.org/chat',
       debug: (str: string) => {
         console.log(`STOMP DEBUG: ${str}`);
       },
-      reconnectDelay: 5000, //자동 재 연결
+      reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
       onConnect: () => {
@@ -100,24 +103,53 @@ const ChatRoomPage = () => {
         console.error('STOMP 에러 발생:', frame);
       },
     });
-    setStompClient(stomp);
 
-    stomp.onConnect = () => {
-      console.log('STOMP 연결 성공');
-      stomp.subscribe(`/topic/${chatRoomId}`, (message) => {
-        console.log('메시지 수신:', message.body);
-      });
-      stomp.publish({
-        destination: `/app/${chatRoomId}`,
-        body: JSON.stringify({
-          chatRoomId: chatRoomId,
-          message: '테스트 메시지',
-        }),
-      });
+    // 비동기 함수 호출
+    const connectStomp = async () => {
+      await stomp.activate(); // 비동기 함수로 처리
+      stomp.onConnect = () => {
+        console.log('STOMP 연결 성공');
+        stomp.subscribe(`/topic/chat/${chatRoomId}`, (message) => {
+          console.log('메시지 수신:', message.body);
+        });
+      };
     };
 
-    stomp.activate();
-  }, []);
+    connectStomp(); // 비동기 함수 호출
+
+    setStompClient(stomp);
+
+    return () => {
+      stomp.deactivate(); // 정리 함수는 동기적으로 처리
+    };
+  }, [chatRoomId]);
+
+  const sendChat = () => {
+    const newMessage = {
+      message: chat,
+    };
+
+    if (stompClient) {
+      stompClient.publish({
+        destination: `/app/chat/${chatRoomId}`,
+        body: JSON.stringify(newMessage),
+        headers: {
+          Authorization: memberPK,
+        },
+      });
+    }
+
+    setMessages((prev) => {
+      const updatedMessages = [
+        ...prev,
+        { sender: memberPK, message: chat, chatRoomId },
+      ];
+      console.log('메시지 발신 성공:', updatedMessages);
+      return updatedMessages;
+    });
+
+    setChat('');
+  };
 
   return (
     <Container>
@@ -126,11 +158,17 @@ const ChatRoomPage = () => {
         <MainText>Name</MainText>
       </TextBox>
       <Box>
-        <Message />
+        {messages.map((msg, index) => (
+          <Message key={index} sender={msg.sender} content={msg.message} />
+        ))}
       </Box>
       <ChattingInputBox>
-        <ChattingInput />
-        <SendButtonBox>
+        <ChattingInput
+          placeholder='채팅을 입력해주세요'
+          value={chat}
+          onChange={(e) => setChat(e.target.value)}
+        />
+        <SendButtonBox onClick={sendChat}>
           <SendIcon fontSize='medium' />
         </SendButtonBox>
       </ChattingInputBox>

@@ -3,6 +3,8 @@ import FooterTabButton from '../components/FooterTabButton.tsx';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import ChattingUser from '../components/ChattingUser.tsx';
+import api from '../utils/axios_interceptor.ts';
+import { useEffect, useState } from 'react';
 
 const Container = styled.div`
   display: flex;
@@ -56,6 +58,23 @@ const ButtonBox = styled.div`
 `;
 
 const ChattingPage = () => {
+  const [chattingRooms, setChattingRooms] = useState([]);
+  const [error, setError] = useState('');
+
+  const getChattingRoomList = async () => {
+    try {
+      const response = await api.get('/chattings');
+      console.log('채팅방 목록 불러오기 성공', response.data);
+    } catch (err) {
+      setError('서버 오류 발생, 재시도 바람');
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    getChattingRoomList();
+  }, []);
+
   return (
     <Container>
       <TextBox>
@@ -63,17 +82,6 @@ const ChattingPage = () => {
       </TextBox>
       <Box>
         {/* <UserBox> */}
-        <ChattingUser />
-        <ChattingUser />
-        <ChattingUser />
-        <ChattingUser />
-        <ChattingUser />
-        <ChattingUser />
-        <ChattingUser />
-        <ChattingUser />
-        <ChattingUser />
-        <ChattingUser />
-        <ChattingUser />
         {/* </UserBox> */}
       </Box>
       <ButtonBox>
