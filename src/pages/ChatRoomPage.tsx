@@ -88,6 +88,8 @@ const ChatRoomPage = () => {
 
   const [stompClient, setStompClient] = useState<Stomp.Client | null>(null);
 
+  const chatInputRef = useRef<HTMLInputElement | null>(null);
+
   const getMessageList = async () => {
     try {
       const response = await api.get(`chattings/${chatRoomId}`);
@@ -187,6 +189,10 @@ const ChatRoomPage = () => {
 
     setChat('');
 
+    if (chatInputRef.current) {
+      chatInputRef.current.focus();
+    }
+
     getMessageList();
   };
 
@@ -216,6 +222,7 @@ const ChatRoomPage = () => {
       </Box>
       <ChattingInputBox>
         <ChattingInput
+          ref={chatInputRef}
           placeholder='채팅을 입력해주세요'
           value={chat}
           onChange={(e) => setChat(e.target.value)}
