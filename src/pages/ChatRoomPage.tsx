@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import SendIcon from '@mui/icons-material/SendOutlined';
 import OutIcon from '@mui/icons-material/West';
-import { useParams } from 'react-router-dom';
-import { Client, IFrame, IMessage } from '@stomp/stompjs';
-import { Stomp } from '@stomp/stompjs';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Client } from '@stomp/stompjs';
+import Message from '../components/Message.tsx';
+import api from '../utils/axios_interceptor.ts';
 
 const Container = styled.div`
   display: flex;
@@ -79,16 +80,37 @@ const SendButtonBox = styled.div`
 
 const ChatRoomPage = () => {
   const { chatRoomId } = useParams();
-  console.log('현재 chatRoomId:', chatRoomId);
-  const [stompClient, setStompClient] = useState<Stomp.Client | null>(null);
+  const navigate = useNavigate();
+  const [chat, setChat] = useState('');
+  const [messages, setMessages] = useState([]);
+  const [error, setError] = useState('');
+  const [stompClient, setStompClient] = useState<Client | null>(null);
+  const memberPK = localStorage.getItem('userNumber');
+  const chatInputRef = useRef<HTMLInputElement | null>(null);
+  const messageEndRef = useRef<HTMLDivElement | null>(null);
+
+  const getMessageList = async () => {
+    try {
+      const response = await api.get(`chattings/${chatRoomId}`);
+      // console.log('메세지 리스트 불러오기 성공', response.data);
+      const sortedMessages = response.data.response.sort(
+        (a, b) => a.chattingId - b.chattingId
+      );
+      setMessages(sortedMessages);
+    } catch (err) {
+      setError('서버 오류 발생, 재시도 바람');
+      console.error(err);
+    }
+  };
 
   useEffect(() => {
+    getMessageList();
     const stomp = new Client({
-      brokerURL: 'ws://15.164.186.158:8080/chat',
+      brokerURL: 'wss://hyunsolution.duckdns.org/chat',
       debug: (str: string) => {
         console.log(`STOMP DEBUG: ${str}`);
       },
-      reconnectDelay: 5000, //자동 재 연결
+      reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
       onConnect: () => {
@@ -98,35 +120,98 @@ const ChatRoomPage = () => {
         console.error('STOMP 에러 발생:', frame);
       },
     });
-    setStompClient(stomp);
 
-    stomp.onConnect = () => {
-      console.log('STOMP 연결 성공');
-      stomp.subscribe(`/topic/${chatRoomId}`, (message) => {
-        console.log('메시지 수신:', message.body);
-      });
-      stomp.publish({
-        destination: `/app/${chatRoomId}`,
-        body: JSON.stringify({
-          chatRoomId: chatRoomId,
-          message: '테스트 메시지',
-        }),
-      });
+    const connectStomp = async () => {
+      await stomp.activate();
+      stomp.onConnect = () => {
+        console.log('STOMP 연결 성공');
+        stomp.subscribe(`/topic/chat/${chatRoomId}`, (message) => {
+          const receivedMessage = JSON.parse(message.body);
+          console.log('상대방 메시지 수신:', receivedMessage);
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            {
+              sender: receivedMessage.sender,
+              message: receivedMessage.message,
+              chatRoomId,
+              isOwn: false,
+            },
+            getMessageList(),
+          ]);
+        });
+      };
     };
 
-    stomp.activate();
-  }, []);
+    connectStomp();
+    setStompClient(stomp);
+
+    return () => {
+      stomp.deactivate(); // 정리 함수는 동기적으로 처리
+    };
+  }, [chatRoomId]);
+
+  useEffect(() => {
+    messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
+  const sendChat = () => {
+    const newMessage = {
+      message: chat,
+      sender: memberPK,
+      chatRoomId,
+    };
+    if (stompClient) {
+      stompClient.publish({
+        destination: `/app/chat/${chatRoomId}`,
+        body: JSON.stringify(newMessage),
+        headers: {
+          Authorization: memberPK,
+        },
+      });
+    }
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { sender: memberPK, message: chat, chatRoomId, isOwn: true },
+    ]);
+    // console.log('메세지 전송 클릭 후', messages);
+
+    setChat('');
+    if (chatInputRef.current) {
+      chatInputRef.current.focus();
+    }
+    getMessageList();
+  };
 
   return (
     <Container>
       <TextBox>
-        <OutIcon fontSize='medium' />
+        <OutIcon
+          fontSize='medium'
+          onClick={() => {
+            navigate('/chat');
+          }}
+        />
         <MainText>Name</MainText>
       </TextBox>
-      <Box></Box>
+      <Box>
+        {messages.map((msg, index) => (
+          <Message
+            key={index}
+            sender={msg.sender}
+            content={msg.content}
+            isOwn={msg.isOwn}
+          />
+        ))}
+        <div ref={messageEndRef}></div>
+      </Box>
       <ChattingInputBox>
-        <ChattingInput />
-        <SendButtonBox>
+        <ChattingInput
+          ref={chatInputRef}
+          placeholder='채팅을 입력해주세요'
+          value={chat}
+          onChange={(e) => setChat(e.target.value)}
+        />
+        <SendButtonBox onClick={sendChat}>
           <SendIcon fontSize='medium' />
         </SendButtonBox>
       </ChattingInputBox>

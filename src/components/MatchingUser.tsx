@@ -11,7 +11,6 @@ const UserBox = styled.div`
   align-items: center;
   width: 100%;
   height: 2.25rem;
-  /* border: 1px solid black; */
 `;
 
 const SubText = styled.p`
@@ -27,14 +26,8 @@ interface MatchingUserProps {
 }
 
 const MatchingUser = ({ creatorUid, workspaceId }: MatchingUserProps) => {
-  const [error, setError] = useState('');
-
   const navigate = useNavigate();
-
-  // const createChatroom = () => {
-  //   console.log('채팅방 넘버', chatRoomId);
-  //   navigate(`/chatroom/${chatRoomId}`);
-  // };
+  const [error, setError] = useState('');
 
   const getChatroomId = async () => {
     try {

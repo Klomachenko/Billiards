@@ -1,12 +1,16 @@
 import styled from '@emotion/styled';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import React from 'react';
 
 const UserBox = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  height: 2.25rem;
+  height: 2.5rem;
   gap: 0.5rem;
+  display: flex;
+  align-items: center;
+  position: relative;
 `;
 
 const TextBox = styled.div`
@@ -16,19 +20,56 @@ const TextBox = styled.div`
 `;
 
 const SubText = styled.p`
-  font-size: 1rem;
+  font-size: 0.75rem;
   font-weight: 400;
   margin: 0;
 `;
 
-const ChattingUser = () => {
+const Message = styled.p`
+  font-size: 0.75rem;
+  font-weight: 400;
+  margin: 0;
+  color: #5a5a5a;
+`;
+
+const ReadCountBox = styled.div`
+  width: 1.2rem;
+  height: 1.2rem;
+  font-size: 0.75rem;
+  background-color: #61ad6f;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  font-weight: 500;
+  border-radius: 50%;
+  position: absolute;
+  right: 0;
+  margin-right: 0.5rem;
+`;
+
+interface ChattingUserProps {
+  lastMessage: string;
+  otherPerson: string;
+  unReadCount: number;
+  onClick: React.MouseEventHandler;
+}
+
+const ChattingUser = ({
+  lastMessage,
+  otherPerson,
+  unReadCount,
+  onClick,
+}: ChattingUserProps) => {
   return (
-    <UserBox>
+    <UserBox onClick={onClick}>
       <AccountCircleIcon fontSize='large' />
       <TextBox>
-        <SubText>사용자 ID</SubText>
-        <SubText>recent chat message</SubText>
+        <SubText>{otherPerson}</SubText>
+        <Message>{lastMessage}</Message>
       </TextBox>
+      <ReadCountBox>{unReadCount}</ReadCountBox>
     </UserBox>
   );
 };
