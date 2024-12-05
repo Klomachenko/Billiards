@@ -5,6 +5,7 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import ChattingUser from '../components/ChattingUser.tsx';
 import api from '../utils/axios_interceptor.ts';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Container = styled.div`
   display: flex;
@@ -72,6 +73,12 @@ const ChattingPage = () => {
     }
   };
 
+  const navigate = useNavigate();
+
+  const enterChat = (chatRoomId: string) => {
+    navigate(`/chatroom/${chatRoomId}`);
+  };
+
   useEffect(() => {
     getChattingRoomList();
   }, []);
@@ -88,6 +95,9 @@ const ChattingPage = () => {
             lastMessage={chatRoom.lastMessage}
             otherPerson={chatRoom.otherPerson}
             unReadCount={chatRoom.unReadCount}
+            onClick={() => {
+              enterChat(chatRoom.chatRoomId);
+            }}
           />
         ))}
       </Box>

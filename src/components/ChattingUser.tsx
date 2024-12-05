@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import React from 'react';
 
 const UserBox = styled.div`
   display: flex;
@@ -52,15 +53,17 @@ interface ChattingUserProps {
   lastMessage: string;
   otherPerson: string;
   unReadCount: number;
+  onClick: React.MouseEventHandler;
 }
 
 const ChattingUser = ({
   lastMessage,
   otherPerson,
   unReadCount,
+  onClick,
 }: ChattingUserProps) => {
   return (
-    <UserBox>
+    <UserBox onClick={onClick}>
       <AccountCircleIcon fontSize='large' />
       <TextBox>
         <SubText>{otherPerson}</SubText>
