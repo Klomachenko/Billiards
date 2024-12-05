@@ -4,7 +4,6 @@ import SendIcon from '@mui/icons-material/SendOutlined';
 import OutIcon from '@mui/icons-material/West';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Client } from '@stomp/stompjs';
-import { Stomp } from '@stomp/stompjs';
 import Message from '../components/Message.tsx';
 import api from '../utils/axios_interceptor.ts';
 
@@ -85,7 +84,7 @@ const ChatRoomPage = () => {
   const [chat, setChat] = useState('');
   const [messages, setMessages] = useState([]);
   const [error, setError] = useState('');
-  const [stompClient, setStompClient] = useState<Stomp.Client | null>(null);
+  const [stompClient, setStompClient] = useState<Client | null>(null);
   const memberPK = localStorage.getItem('userNumber');
   const chatInputRef = useRef<HTMLInputElement | null>(null);
   const messageEndRef = useRef<HTMLDivElement | null>(null);
