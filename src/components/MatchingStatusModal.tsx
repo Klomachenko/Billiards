@@ -1,13 +1,14 @@
 import styled from '@emotion/styled';
 import UnmatchedUser from '@mui/icons-material/PersonOutlineOutlined';
 import MatchedUser from '@mui/icons-material/Person';
+import api from '../utils/axios_interceptor';
+import { useState } from 'react';
 
 const Container = styled.div`
   display: flex;
   width: 13.5rem;
   height: 13.5rem;
   border-radius: 1rem;
-  border: 1px solid black;
   background-color: #ffffff;
   flex-direction: column;
   align-items: center;
@@ -82,21 +83,76 @@ const TextBox = styled.div`
   font-size: 0.625rem;
 `;
 
-const MatchingStatusModal = () => {
+const MatchingStatusModal = ({
+  myMatchStatus,
+  counterPartMatchStatus,
+  chatRoomId,
+}) => {
+  const [error, setError] = useState('');
+  console.log(localStorage.getItem('userNumber'));
+  const [myStatus, setMystatus] = useState(myMatchStatus);
+  const [counterPartStatus, setCounterPartStatus] = useState(
+    counterPartMatchStatus
+  );
+
+  const getMatchingStatus = async () => {
+    try {
+      const response = await api.get(`participant/${chatRoomId}/matchStatus`);
+      console.log('매칭 현황 조회 불러오기 성공', response.data);
+      setMystatus(response.data.response.myself);
+      setCounterPartStatus(response.data.response.counterpart);
+    } catch (err) {
+      setError('서버 오류 발생, 재시도 바람');
+      console.error(err);
+    }
+  };
+
+  const applyMatch = async () => {
+    try {
+      const response = await api.post(
+        `participant/matching/${chatRoomId}`,
+        {
+          isMatch: !myStatus,
+        },
+        {
+          headers: {
+            Authorization: localStorage.getItem('userNumber'),
+          },
+        }
+      );
+      console.log('매칭 신청 버튼 클릭', response.data);
+      getMatchingStatus();
+    } catch (err) {
+      setError('서버 오류 발생, 재시도 바람');
+      console.error(err);
+    }
+  };
+
   return (
     <Container>
       <TitleBox>매칭 현황</TitleBox>
       <IconBox>
         <UserBox>
-          <UnmatchedUser fontSize='large' />나
+          {myStatus ? (
+            <MatchedUser fontSize='large' />
+          ) : (
+            <UnmatchedUser fontSize='large' />
+          )}
+          나
         </UserBox>
         <UserBox>
-          <MatchedUser fontSize='large' />
+          {counterPartStatus ? (
+            <MatchedUser fontSize='large' />
+          ) : (
+            <UnmatchedUser fontSize='large' />
+          )}
           상대방
         </UserBox>
       </IconBox>
       <ButtonBox>
-        <MatchingSelectButton>매칭 신청</MatchingSelectButton>
+        <MatchingSelectButton onClick={applyMatch}>
+          {myStatus ? '취소' : '매칭 신청'}
+        </MatchingSelectButton>
       </ButtonBox>
       <TextBox>매칭이 확정되면 취소가 불가능합니다</TextBox>
     </Container>

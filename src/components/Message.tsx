@@ -8,7 +8,7 @@ const MessageContainer = styled.div<{ isOwn: boolean }>`
 
 const MessageBox = styled.div<{ isOwn: boolean }>`
   max-width: 13.75rem;
-  min-height: 2.75rem;
+  min-height: 2rem;
   background-color: ${({ isOwn }) => (isOwn ? '#daf5dc' : '#f5f5f5')};
   border-radius: 0.9375rem;
   padding: 0.1rem 0.55rem;

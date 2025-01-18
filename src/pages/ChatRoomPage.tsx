@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Client } from '@stomp/stompjs';
 import Message from '../components/Message.tsx';
 import api from '../utils/axios_interceptor.ts';
+import MatchingStatusModal from '../components/MatchingStatusModal.tsx';
 
 const Container = styled.div`
   display: flex;
@@ -93,6 +94,19 @@ const SendButtonBox = styled.div`
   justify-content: center;
 `;
 
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+`;
+
 const ChatRoomPage = () => {
   const { chatRoomId } = useParams();
   const navigate = useNavigate();
@@ -103,15 +117,33 @@ const ChatRoomPage = () => {
   const memberPK = localStorage.getItem('userNumber');
   const chatInputRef = useRef<HTMLInputElement | null>(null);
   const messageEndRef = useRef<HTMLDivElement | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [myMatchStatus, setMyMatchStatus] = useState(false);
+  const [counterpartMatchStatus, setCounterpartMatchStatus] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   const getMessageList = async () => {
     try {
       const response = await api.get(`chattings/${chatRoomId}`);
-      // console.log('메세지 리스트 불러오기 성공', response.data);
       const sortedMessages = response.data.response.chattings.sort(
         (a, b) => a.chattingId - b.chattingId
       );
       setMessages(sortedMessages);
+    } catch (err) {
+      setError('서버 오류 발생, 재시도 바람');
+      console.error(err);
+    }
+  };
+
+  const getMatchingStatus = async () => {
+    try {
+      const response = await api.get(`participant/${chatRoomId}/matchStatus`);
+      console.log('매칭 현황 조회 불러오기 성공', response.data);
+      openModal();
+      setMyMatchStatus(response.data.response.myself);
+      setCounterpartMatchStatus(response.data.response.counterpart);
     } catch (err) {
       setError('서버 오류 발생, 재시도 바람');
       console.error(err);
@@ -161,7 +193,7 @@ const ChatRoomPage = () => {
     setStompClient(stomp);
 
     return () => {
-      stomp.deactivate(); // 정리 함수는 동기적으로 처리
+      stomp.deactivate();
     };
   }, [chatRoomId]);
 
@@ -188,7 +220,6 @@ const ChatRoomPage = () => {
       ...prevMessages,
       { sender: memberPK, message: chat, chatRoomId, isOwn: true },
     ]);
-    // console.log('메세지 전송 클릭 후', messages);
 
     setChat('');
     if (chatInputRef.current) {
@@ -197,7 +228,17 @@ const ChatRoomPage = () => {
     getMessageList();
   };
 
-  return (
+  return isModalOpen ? (
+    <ModalOverlay onClick={closeModal}>
+      <div onClick={(e) => e.stopPropagation()}>
+        <MatchingStatusModal
+          myMatchStatus={myMatchStatus}
+          counterPartMatchStatus={counterpartMatchStatus}
+          chatRoomId={chatRoomId}
+        />
+      </div>
+    </ModalOverlay>
+  ) : (
     <Container>
       <TextBox>
         <OutIcon
@@ -207,7 +248,9 @@ const ChatRoomPage = () => {
           }}
         />
         <MainText>Name</MainText>
-        <MatchingCheckButton>매칭 현황</MatchingCheckButton>
+        <MatchingCheckButton onClick={getMatchingStatus}>
+          매칭 현황
+        </MatchingCheckButton>
       </TextBox>
       <Box>
         {messages.map((msg, index) => (
@@ -234,4 +277,5 @@ const ChatRoomPage = () => {
     </Container>
   );
 };
+
 export default ChatRoomPage;
