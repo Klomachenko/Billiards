@@ -25,6 +25,7 @@ const TextBox = styled.div`
   align-items: center;
   margin-bottom: 1.5rem;
   gap: 1rem;
+  position: relative;
 `;
 
 const MainText = styled.h1`
@@ -33,10 +34,24 @@ const MainText = styled.h1`
   margin: 0;
 `;
 
+const MatchingCheckButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.0313rem solid black;
+  border-radius: 1.5rem;
+  width: 4.125rem;
+  height: 1.5rem;
+  font-size: 0.75rem;
+  background-color: #ffffff;
+  color: #303030;
+  position: absolute;
+  right: 0;
+`;
+
 const Box = styled.div`
   box-sizing: border-box;
-  width: 100%;
-  padding: 0 10%;
+  width: 90%;
   height: 70%;
   display: flex;
   overflow-y: auto;
@@ -192,6 +207,7 @@ const ChatRoomPage = () => {
           }}
         />
         <MainText>Name</MainText>
+        <MatchingCheckButton>매칭 현황</MatchingCheckButton>
       </TextBox>
       <Box>
         {messages.map((msg, index) => (
