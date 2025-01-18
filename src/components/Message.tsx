@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import { useState } from 'react';
 
 const MessageContainer = styled.div<{ isOwn: boolean }>`
   display: flex;
@@ -19,19 +20,58 @@ const MessageBox = styled.div<{ isOwn: boolean }>`
   line-height: 1.5;
 `;
 
+const SystemMessageBox = styled.div`
+  width: 100%;
+  height: 1.5rem;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  color: #757575;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const StartgameMessageBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 4.75rem;
+  background-color: #f3f9f4;
+  color: #14ae5c;
+  font-size: 0.875rem;
+  border-radius: 0.875rem;
+`;
+
 const Message = ({
   content,
   isOwn,
+  messageType,
 }: {
   sender: string;
   content: string;
   isOwn: boolean;
+  messageType: string;
 }) => {
+  const [msgType, setMsgType] = useState(messageType);
+
   return (
     <MessageContainer isOwn={isOwn}>
-      <MessageBox isOwn={isOwn}>
-        <p>{content}</p>
-      </MessageBox>
+      {messageType == 'TEXT' ? (
+        <MessageBox isOwn={isOwn}>
+          <p>{content}</p>
+        </MessageBox>
+      ) : messageType == 'SYSTEM' ? (
+        <SystemMessageBox>{content}</SystemMessageBox>
+      ) : (
+        <StartgameMessageBox>
+          <p>매칭되었습니다.</p>
+          <p>대전에서 게임을 시작하세요!</p>
+        </StartgameMessageBox>
+      )}
     </MessageContainer>
   );
 };

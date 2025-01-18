@@ -127,6 +127,7 @@ const ChatRoomPage = () => {
   const getMessageList = async () => {
     try {
       const response = await api.get(`chattings/${chatRoomId}`);
+      console.log('채팅 전체 데이터', response.data);
       const sortedMessages = response.data.response.chattings.sort(
         (a, b) => a.chattingId - b.chattingId
       );
@@ -180,6 +181,7 @@ const ChatRoomPage = () => {
             {
               sender: receivedMessage.sender,
               message: receivedMessage.message,
+              messageType: receivedMessage.messageType, // 메세지 타입도 받아오도록 설정
               chatRoomId,
               isOwn: false,
             },
@@ -259,6 +261,7 @@ const ChatRoomPage = () => {
             sender={msg.sender}
             content={msg.content}
             isOwn={msg.isOwn}
+            messageType={msg.messageType}
           />
         ))}
         <div ref={messageEndRef}></div>
