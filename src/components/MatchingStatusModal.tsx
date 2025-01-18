@@ -81,12 +81,15 @@ const TextBox = styled.div`
   justify-content: center;
   color: #757575;
   font-size: 0.625rem;
+  flex-direction: column;
+  gap: 0.25rem;
 `;
 
 const MatchingStatusModal = ({
   myMatchStatus,
   counterPartMatchStatus,
   chatRoomId,
+  matchStatus,
 }) => {
   const [error, setError] = useState('');
   console.log(localStorage.getItem('userNumber'));
@@ -154,7 +157,16 @@ const MatchingStatusModal = ({
           {myStatus ? '취소' : '매칭 신청'}
         </MatchingSelectButton>
       </ButtonBox>
-      <TextBox>매칭이 확정되면 취소가 불가능합니다</TextBox>
+      <TextBox>
+        {matchStatus ? (
+          <>
+            <p>이미 매칭이 완료되었습니다.</p>
+            <p>수락/거절이 불가능합니다.</p>
+          </>
+        ) : (
+          '매칭이 확정되면 취소가 불가능합니다'
+        )}
+      </TextBox>
     </Container>
   );
 };

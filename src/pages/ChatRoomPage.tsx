@@ -39,13 +39,28 @@ const MatchingCheckButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 0.0313rem solid black;
+  border: 0.0313rem solid #2c2c2c;
   border-radius: 1.5rem;
   width: 4.125rem;
   height: 1.5rem;
   font-size: 0.75rem;
   background-color: #ffffff;
-  color: #303030;
+  color: #2c2c2c;
+  position: absolute;
+  right: 0;
+`;
+
+const MatchingConfirmedButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.0313rem solid #2c2c2c;
+  border-radius: 1.5rem;
+  width: 4.125rem;
+  height: 1.5rem;
+  font-size: 0.75rem;
+  background-color: #2c2c2c;
+  color: #f3f3f3;
   position: absolute;
   right: 0;
 `;
@@ -120,6 +135,7 @@ const ChatRoomPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [myMatchStatus, setMyMatchStatus] = useState(false);
   const [counterpartMatchStatus, setCounterpartMatchStatus] = useState(false);
+  const [matchStatus, setMatchStatus] = useState(false);
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
@@ -145,6 +161,7 @@ const ChatRoomPage = () => {
       openModal();
       setMyMatchStatus(response.data.response.myself);
       setCounterpartMatchStatus(response.data.response.counterpart);
+      setMatchStatus(response.data.response.matchResult);
     } catch (err) {
       setError('서버 오류 발생, 재시도 바람');
       console.error(err);
@@ -237,6 +254,7 @@ const ChatRoomPage = () => {
           myMatchStatus={myMatchStatus}
           counterPartMatchStatus={counterpartMatchStatus}
           chatRoomId={chatRoomId}
+          matchStatus={matchStatus}
         />
       </div>
     </ModalOverlay>
@@ -250,9 +268,15 @@ const ChatRoomPage = () => {
           }}
         />
         <MainText>Name</MainText>
-        <MatchingCheckButton onClick={getMatchingStatus}>
-          매칭 현황
-        </MatchingCheckButton>
+        {matchStatus ? (
+          <MatchingCheckButton onClick={getMatchingStatus}>
+            매칭 현황
+          </MatchingCheckButton>
+        ) : (
+          <MatchingConfirmedButton onClick={getMatchingStatus}>
+            매칭 확정
+          </MatchingConfirmedButton>
+        )}
       </TextBox>
       <Box>
         {messages.map((msg, index) => (
