@@ -93,7 +93,7 @@ const ChatRoomPage = () => {
     try {
       const response = await api.get(`chattings/${chatRoomId}`);
       // console.log('메세지 리스트 불러오기 성공', response.data);
-      const sortedMessages = response.data.response.sort(
+      const sortedMessages = response.data.response.chattings.sort(
         (a, b) => a.chattingId - b.chattingId
       );
       setMessages(sortedMessages);
