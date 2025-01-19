@@ -6,6 +6,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Client } from '@stomp/stompjs';
 import Message from '../components/Message.tsx';
 import api from '../utils/axios_interceptor.ts';
+import MatchingStatusModal from '../components/MatchingStatusModal.tsx';
 
 const Container = styled.div`
   display: flex;
@@ -25,6 +26,7 @@ const TextBox = styled.div`
   align-items: center;
   margin-bottom: 1.5rem;
   gap: 1rem;
+  position: relative;
 `;
 
 const MainText = styled.h1`
@@ -33,10 +35,39 @@ const MainText = styled.h1`
   margin: 0;
 `;
 
+const MatchingCheckButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.0313rem solid #2c2c2c;
+  border-radius: 1.5rem;
+  width: 4.125rem;
+  height: 1.5rem;
+  font-size: 0.75rem;
+  background-color: #ffffff;
+  color: #2c2c2c;
+  position: absolute;
+  right: 0;
+`;
+
+const MatchingConfirmedButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.0313rem solid #2c2c2c;
+  border-radius: 1.5rem;
+  width: 4.125rem;
+  height: 1.5rem;
+  font-size: 0.75rem;
+  background-color: #2c2c2c;
+  color: #f3f3f3;
+  position: absolute;
+  right: 0;
+`;
+
 const Box = styled.div`
   box-sizing: border-box;
-  width: 100%;
-  padding: 0 10%;
+  width: 90%;
   height: 70%;
   display: flex;
   overflow-y: auto;
@@ -78,6 +109,19 @@ const SendButtonBox = styled.div`
   justify-content: center;
 `;
 
+const ModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+`;
+
 const ChatRoomPage = () => {
   const { chatRoomId } = useParams();
   const navigate = useNavigate();
@@ -88,15 +132,36 @@ const ChatRoomPage = () => {
   const memberPK = localStorage.getItem('userNumber');
   const chatInputRef = useRef<HTMLInputElement | null>(null);
   const messageEndRef = useRef<HTMLDivElement | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [myMatchStatus, setMyMatchStatus] = useState(false);
+  const [counterpartMatchStatus, setCounterpartMatchStatus] = useState(false);
+  const [matchStatus, setMatchStatus] = useState(false);
+
+  const openModal = () => setIsModalOpen(true);
+  const closeModal = () => setIsModalOpen(false);
 
   const getMessageList = async () => {
     try {
       const response = await api.get(`chattings/${chatRoomId}`);
-      // console.log('메세지 리스트 불러오기 성공', response.data);
-      const sortedMessages = response.data.response.sort(
+      console.log('채팅 전체 데이터', response.data);
+      const sortedMessages = response.data.response.chattings.sort(
         (a, b) => a.chattingId - b.chattingId
       );
       setMessages(sortedMessages);
+    } catch (err) {
+      setError('서버 오류 발생, 재시도 바람');
+      console.error(err);
+    }
+  };
+
+  const getMatchingStatus = async () => {
+    try {
+      const response = await api.get(`participant/${chatRoomId}/matchStatus`);
+      console.log('매칭 현황 조회 불러오기 성공', response.data);
+      openModal();
+      setMyMatchStatus(response.data.response.myself);
+      setCounterpartMatchStatus(response.data.response.counterpart);
+      setMatchStatus(response.data.response.matchResult);
     } catch (err) {
       setError('서버 오류 발생, 재시도 바람');
       console.error(err);
@@ -133,11 +198,12 @@ const ChatRoomPage = () => {
             {
               sender: receivedMessage.sender,
               message: receivedMessage.message,
+              messageType: receivedMessage.messageType, // 메세지 타입도 받아오도록 설정
               chatRoomId,
               isOwn: false,
             },
-            getMessageList(),
           ]);
+          getMessageList();
         });
       };
     };
@@ -146,12 +212,12 @@ const ChatRoomPage = () => {
     setStompClient(stomp);
 
     return () => {
-      stomp.deactivate(); // 정리 함수는 동기적으로 처리
+      stomp.deactivate();
     };
   }, [chatRoomId]);
 
   useEffect(() => {
-    messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    messageEndRef.current.scrollIntoView({ behavior: 'auto' });
   }, [messages]);
 
   const sendChat = () => {
@@ -173,7 +239,6 @@ const ChatRoomPage = () => {
       ...prevMessages,
       { sender: memberPK, message: chat, chatRoomId, isOwn: true },
     ]);
-    // console.log('메세지 전송 클릭 후', messages);
 
     setChat('');
     if (chatInputRef.current) {
@@ -182,7 +247,18 @@ const ChatRoomPage = () => {
     getMessageList();
   };
 
-  return (
+  return isModalOpen ? (
+    <ModalOverlay onClick={closeModal}>
+      <div onClick={(e) => e.stopPropagation()}>
+        <MatchingStatusModal
+          myMatchStatus={myMatchStatus}
+          counterPartMatchStatus={counterpartMatchStatus}
+          chatRoomId={chatRoomId}
+          matchStatus={matchStatus}
+        />
+      </div>
+    </ModalOverlay>
+  ) : (
     <Container>
       <TextBox>
         <OutIcon
@@ -192,6 +268,15 @@ const ChatRoomPage = () => {
           }}
         />
         <MainText>Name</MainText>
+        {!matchStatus ? (
+          <MatchingCheckButton onClick={getMatchingStatus}>
+            매칭 현황
+          </MatchingCheckButton>
+        ) : (
+          <MatchingConfirmedButton onClick={getMatchingStatus}>
+            매칭 확정
+          </MatchingConfirmedButton>
+        )}
       </TextBox>
       <Box>
         {messages.map((msg, index) => (
@@ -200,6 +285,7 @@ const ChatRoomPage = () => {
             sender={msg.sender}
             content={msg.content}
             isOwn={msg.isOwn}
+            messageType={msg.messageType}
           />
         ))}
         <div ref={messageEndRef}></div>
@@ -218,4 +304,5 @@ const ChatRoomPage = () => {
     </Container>
   );
 };
+
 export default ChatRoomPage;

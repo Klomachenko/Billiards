@@ -33,8 +33,8 @@ const Message = styled.p`
 `;
 
 const ReadCountBox = styled.div`
-  width: 1.2rem;
-  height: 1.2rem;
+  width: 0.5rem;
+  height: 0.5rem;
   font-size: 0.75rem;
   background-color: #61ad6f;
   color: white;
@@ -69,7 +69,8 @@ const ChattingUser = ({
         <SubText>{otherPerson}</SubText>
         <Message>{lastMessage}</Message>
       </TextBox>
-      <ReadCountBox>{unReadCount}</ReadCountBox>
+      {/* <ReadCountBox>{unReadCount}</ReadCountBox> -> 언리드카운트 현재 에러, 추후 수정필요 */}
+      {unReadCount !== 0 ? <ReadCountBox /> : null}
     </UserBox>
   );
 };
