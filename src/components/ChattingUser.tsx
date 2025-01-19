@@ -59,7 +59,7 @@ interface ChattingUserProps {
 const ChattingUser = ({
   lastMessage,
   otherPerson,
-  // unReadCount,
+  unReadCount,
   onClick,
 }: ChattingUserProps) => {
   return (
@@ -70,7 +70,7 @@ const ChattingUser = ({
         <Message>{lastMessage}</Message>
       </TextBox>
       {/* <ReadCountBox>{unReadCount}</ReadCountBox> -> 언리드카운트 현재 에러, 추후 수정필요 */}
-      <ReadCountBox />
+      {unReadCount !== 0 ? <ReadCountBox /> : null}
     </UserBox>
   );
 };
