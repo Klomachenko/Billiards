@@ -268,7 +268,7 @@ const ChatRoomPage = () => {
           }}
         />
         <MainText>Name</MainText>
-        {matchStatus ? (
+        {!matchStatus ? (
           <MatchingCheckButton onClick={getMatchingStatus}>
             매칭 현황
           </MatchingCheckButton>
