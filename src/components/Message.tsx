@@ -56,15 +56,17 @@ const Message = ({
   isOwn: boolean;
   messageType: string;
 }) => {
-  const [msgType, setMsgType] = useState(messageType);
+  if (!content || !messageType) {
+    return null; // 빈 메시지나 타입이 없으면 렌더링 생략
+  }
 
   return (
     <MessageContainer isOwn={isOwn}>
-      {messageType == 'TEXT' ? (
+      {messageType === 'TEXT' ? (
         <MessageBox isOwn={isOwn}>
           <p>{content}</p>
         </MessageBox>
-      ) : messageType == 'SYSTEM' ? (
+      ) : messageType === 'SYSTEM' ? (
         <SystemMessageBox>{content}</SystemMessageBox>
       ) : (
         <StartgameMessageBox>

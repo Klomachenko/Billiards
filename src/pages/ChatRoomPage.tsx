@@ -202,8 +202,8 @@ const ChatRoomPage = () => {
               chatRoomId,
               isOwn: false,
             },
-            getMessageList(),
           ]);
+          getMessageList();
         });
       };
     };
@@ -217,7 +217,7 @@ const ChatRoomPage = () => {
   }, [chatRoomId]);
 
   useEffect(() => {
-    messageEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    messageEndRef.current.scrollIntoView({ behavior: 'auto' });
   }, [messages]);
 
   const sendChat = () => {
