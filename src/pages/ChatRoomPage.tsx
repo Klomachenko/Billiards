@@ -136,18 +136,25 @@ const ChatRoomPage = () => {
   const [myMatchStatus, setMyMatchStatus] = useState(false);
   const [counterpartMatchStatus, setCounterpartMatchStatus] = useState(false);
   const [matchStatus, setMatchStatus] = useState(false);
+  const [chatRoomName, setChatRoomName] = useState('');
 
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
 
   const getMessageList = async () => {
     try {
-      const response = await api.get(`chattings/${chatRoomId}`);
+      const response = await api.get(`chattings/${chatRoomId}`, {
+        headers: {
+          Authorization: localStorage.getItem('userNumber'),
+          RoomId: chatRoomId,
+        },
+      });
       console.log('채팅 전체 데이터', response.data);
       const sortedMessages = response.data.response.chattings.sort(
         (a, b) => a.chattingId - b.chattingId
       );
       setMessages(sortedMessages);
+      setChatRoomName(response.data.response.otherPeople[0]);
     } catch (err) {
       setError('서버 오류 발생, 재시도 바람');
       console.error(err);
@@ -178,6 +185,10 @@ const ChatRoomPage = () => {
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
+      connectHeaders: {
+        Authorization: localStorage.getItem('userNumber'),
+        RoomId: chatRoomId,
+      },
       onConnect: () => {
         console.log('STOMP 연결 성공');
       },
@@ -267,7 +278,7 @@ const ChatRoomPage = () => {
             navigate('/chat');
           }}
         />
-        <MainText>Name</MainText>
+        <MainText>{chatRoomName}</MainText>
         {!matchStatus ? (
           <MatchingCheckButton onClick={getMatchingStatus}>
             매칭 현황
