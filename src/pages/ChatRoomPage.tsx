@@ -142,7 +142,12 @@ const ChatRoomPage = () => {
 
   const getMessageList = async () => {
     try {
-      const response = await api.get(`chattings/${chatRoomId}`);
+      const response = await api.get(`chattings/${chatRoomId}`, {
+        headers: {
+          Authorization: localStorage.getItem('userNumber'),
+          RoomId: chatRoomId,
+        },
+      });
       console.log('채팅 전체 데이터', response.data);
       const sortedMessages = response.data.response.chattings.sort(
         (a, b) => a.chattingId - b.chattingId
@@ -178,6 +183,10 @@ const ChatRoomPage = () => {
       reconnectDelay: 5000,
       heartbeatIncoming: 4000,
       heartbeatOutgoing: 4000,
+      connectHeaders: {
+        Authorization: localStorage.getItem('userNumber'),
+        RoomId: chatRoomId,
+      },
       onConnect: () => {
         console.log('STOMP 연결 성공');
       },
