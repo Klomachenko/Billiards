@@ -5,6 +5,8 @@ import FooterTabButton from '../components/FooterTabButton';
 import api from '../utils/axios_interceptor';
 import { useEffect, useState } from 'react';
 import GameUsers from '../components/GameUsers';
+import myPageIcon from '@mui/icons-material/PersonOutlineOutlined';
+import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi';
 
 const Container = styled.div`
   display: flex;
@@ -93,7 +95,7 @@ const GameListPage = () => {
       <Box>
         {games?.map((game) => (
           <GameUsers
-            key={game.gamdId}
+            key={game.gameId}
             myNickname={game.myNickname}
             opponentNickname={game.opponentNickname}
             winnerNickname={game.winnerNickname}
@@ -111,6 +113,8 @@ const GameListPage = () => {
           Icon={ChatBubbleOutlineIcon}
           url='chat'
         />
+        <FooterTabButton text='게임' Icon={SportsKabaddiIcon} url='game' />
+        <FooterTabButton text='my' Icon={myPageIcon} url='game' />
       </ButtonBox>
     </Container>
   );

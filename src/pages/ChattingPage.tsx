@@ -6,6 +6,8 @@ import ChattingUser from '../components/ChattingUser.tsx';
 import api from '../utils/axios_interceptor.ts';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import myPageIcon from '@mui/icons-material/PersonOutlineOutlined';
+import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi';
 
 const Container = styled.div`
   display: flex;
@@ -111,6 +113,8 @@ const ChattingPage = () => {
           Icon={ChatBubbleOutlineIcon}
           url='chat'
         />
+        <FooterTabButton text='게임' Icon={SportsKabaddiIcon} url='game' />
+        <FooterTabButton text='my' Icon={myPageIcon} url='game' />
       </ButtonBox>
     </Container>
   );
