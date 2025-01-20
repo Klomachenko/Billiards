@@ -92,7 +92,7 @@ const ChattingPage = () => {
           <ChattingUser
             key={chatRoom.chatRoomId}
             lastMessage={chatRoom.lastMessage}
-            otherPerson={chatRoom.otherPerson}
+            otherPerson={chatRoom.otherPeople[0]}
             unReadCount={chatRoom.unReadCount}
             onClick={() => {
               enterChat(chatRoom.chatRoomId);
