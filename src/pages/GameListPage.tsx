@@ -1,11 +1,10 @@
 import styled from '@emotion/styled';
-import FooterTabButton from '../components/FooterTabButton.tsx';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import ChattingUser from '../components/ChattingUser.tsx';
-import api from '../utils/axios_interceptor.ts';
+import FooterTabButton from '../components/FooterTabButton';
+import api from '../utils/axios_interceptor';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import GameUsers from '../components/GameUsers';
 import myPageIcon from '@mui/icons-material/PersonOutlineOutlined';
 import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi';
 
@@ -19,6 +18,7 @@ const Container = styled.div`
   max-width: 480px;
   margin: 0 auto;
   position: relative;
+  background-color: #f6f6f6;
 `;
 
 const TextBox = styled.div`
@@ -44,7 +44,6 @@ const Box = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 1rem;
-  /* border: 1px solid black; */
 
   &::-webkit-scrollbar {
     display: none;
@@ -60,45 +59,46 @@ const ButtonBox = styled.div`
   display: flex;
 `;
 
-const ChattingPage = () => {
-  const navigate = useNavigate();
-  const [chattingRooms, setChattingRooms] = useState([]);
+const JoinButtonBox = styled.div`
+  position: absolute;
+  bottom: 4rem;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  z-index: 1;
+`;
+
+const GameListPage = () => {
+  const [games, setGames] = useState([]);
   const [error, setError] = useState('');
 
-  const getChattingRoomList = async () => {
+  const getGameList = async () => {
     try {
-      const response = await api.get('/chattings');
-      console.log('채팅방 목록 불러오기 성공', response.data.response);
-      setChattingRooms(response.data.response);
+      const response = await api.get('/games');
+      console.log('게임목록 불러오기 성공', response.data.response);
+      setGames(response.data.response);
     } catch (err) {
       setError('서버 오류 발생, 재시도 바람');
       console.error(err);
     }
   };
 
-  const enterChat = (chatRoomId: string) => {
-    navigate(`/chatroom/${chatRoomId}`);
-  };
-
   useEffect(() => {
-    getChattingRoomList();
+    getGameList();
   }, []);
 
   return (
     <Container>
+      {/* <GameUsers /> */}
       <TextBox>
-        <MainText>채팅 목록</MainText>
+        <MainText>게임 목록</MainText>
       </TextBox>
       <Box>
-        {chattingRooms?.map((chatRoom) => (
-          <ChattingUser
-            key={chatRoom.chatRoomId}
-            lastMessage={chatRoom.lastMessage}
-            otherPerson={chatRoom.otherPeople[0]}
-            unReadCount={chatRoom.unReadCount}
-            onClick={() => {
-              enterChat(chatRoom.chatRoomId);
-            }}
+        {games?.map((game) => (
+          <GameUsers
+            key={game.gameId}
+            myNickname={game.myNickname}
+            opponentNickname={game.opponentNickname}
+            winnerNickname={game.winnerNickname}
           />
         ))}
       </Box>
@@ -120,4 +120,4 @@ const ChattingPage = () => {
   );
 };
 
-export default ChattingPage;
+export default GameListPage;

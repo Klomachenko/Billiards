@@ -6,6 +6,8 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import JoinQueueButton from '../components/JoinQueueButton.tsx';
 import { useEffect, useState } from 'react';
 import api from '../utils/axios_interceptor.ts';
+import myPageIcon from '@mui/icons-material/PersonOutlineOutlined';
+import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi';
 
 const Container = styled.div`
   display: flex;
@@ -129,6 +131,8 @@ const MatchingListPage = () => {
           Icon={ChatBubbleOutlineIcon}
           url='chat'
         />
+        <FooterTabButton text='게임' Icon={SportsKabaddiIcon} url='game' />
+        <FooterTabButton text='my' Icon={myPageIcon} url='game' />
       </ButtonBox>
     </Container>
   );
