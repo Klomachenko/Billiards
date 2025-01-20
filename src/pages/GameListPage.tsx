@@ -2,6 +2,9 @@ import styled from '@emotion/styled';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import FooterTabButton from '../components/FooterTabButton';
+import api from '../utils/axios_interceptor';
+import { useEffect, useState } from 'react';
+import GameUsers from '../components/GameUsers';
 
 const Container = styled.div`
   display: flex;
@@ -13,16 +16,13 @@ const Container = styled.div`
   max-width: 480px;
   margin: 0 auto;
   position: relative;
+  background-color: #f6f6f6;
 `;
 
 const TextBox = styled.div`
   display: flex;
-  width: 90%;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  gap: 1rem;
-  position: relative;
-  border: 1px solid black;
+  width: 80%;
+  align-items: flex-start;
 `;
 
 const MainText = styled.h1`
@@ -42,7 +42,6 @@ const Box = styled.div`
   flex-direction: column;
   align-items: flex-start;
   gap: 1rem;
-  border: 1px solid black;
 
   &::-webkit-scrollbar {
     display: none;
@@ -67,12 +66,40 @@ const JoinButtonBox = styled.div`
 `;
 
 const GameListPage = () => {
+  const [games, setGames] = useState([]);
+  const [error, setError] = useState('');
+
+  const getGameList = async () => {
+    try {
+      const response = await api.get('/games');
+      console.log('게임목록 불러오기 성공', response.data.response);
+      setGames(response.data.response);
+    } catch (err) {
+      setError('서버 오류 발생, 재시도 바람');
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    getGameList();
+  }, []);
+
   return (
     <Container>
+      {/* <GameUsers /> */}
       <TextBox>
         <MainText>게임 목록</MainText>
       </TextBox>
-      <Box></Box>
+      <Box>
+        {games?.map((game) => (
+          <GameUsers
+            key={game.gamdId}
+            myNickname={game.myNickname}
+            opponentNickname={game.opponentNickname}
+            winnerNickname={game.winnerNickname}
+          />
+        ))}
+      </Box>
       <ButtonBox>
         <FooterTabButton
           text='매칭 대기 목록'
