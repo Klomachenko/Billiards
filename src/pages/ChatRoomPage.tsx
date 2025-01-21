@@ -176,7 +176,7 @@ const ChatRoomPage = () => {
   };
 
   useEffect(() => {
-    getMessageList();
+    // getMessageList();
     const stomp = new Client({
       brokerURL: 'wss://hyunsolution.duckdns.org/chat',
       debug: (str: string) => {
@@ -223,12 +223,13 @@ const ChatRoomPage = () => {
     setStompClient(stomp);
 
     return () => {
+      console.log('isCleanup? at CahtRoomPage');
       stomp.deactivate();
     };
   }, [chatRoomId]);
 
   useEffect(() => {
-    messageEndRef.current.scrollIntoView({ behavior: 'auto' });
+    messageEndRef.current?.scrollIntoView({ behavior: 'auto' });
   }, [messages]);
 
   const sendChat = () => {
@@ -238,7 +239,7 @@ const ChatRoomPage = () => {
       chatRoomId,
     };
     if (stompClient) {
-      stompClient.publish({
+      stompClient?.publish({
         destination: `/app/chat/${chatRoomId}`,
         body: JSON.stringify(newMessage),
         headers: {
