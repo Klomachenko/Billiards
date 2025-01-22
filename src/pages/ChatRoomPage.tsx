@@ -176,7 +176,7 @@ const ChatRoomPage = () => {
   };
 
   useEffect(() => {
-    // getMessageList();
+    getMessageList();
     const stomp = new Client({
       brokerURL: 'wss://hyunsolution.duckdns.org/chat',
       debug: (str: string) => {
