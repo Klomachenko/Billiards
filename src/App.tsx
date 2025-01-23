@@ -6,6 +6,7 @@ import ChattingPage from './pages/ChattingPage.tsx';
 import ChatRoomPage from './pages/ChatRoomPage.tsx';
 import GameListPage from './pages/GameListPage.tsx';
 import MyPage from './pages/MyPage.tsx';
+import GamePage from './pages/GamePage.tsx';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path='/chatroom/:chatRoomId' element={<ChatRoomPage />} />
           <Route path='/game' element={<GameListPage />} />
           <Route path='/my' element={<MyPage />} />
+          <Route path='/mockgame' element={<GamePage />} />
         </Routes>
       </BrowserRouter>
     </>

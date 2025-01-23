@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { useNavigate } from 'react-router-dom';
 
 const GameBox = styled.div`
   display: flex;
@@ -77,6 +78,11 @@ const GameStartButton = styled.button`
 `;
 
 const GameUsers = ({ myNickname, opponentNickname, winnerNickname, date }) => {
+  const naviagate = useNavigate();
+
+  const handleGameClick = () => {
+    naviagate('/mockgame');
+  };
   return (
     <GameBox>
       <DateBox>{date}</DateBox>
@@ -92,7 +98,9 @@ const GameUsers = ({ myNickname, opponentNickname, winnerNickname, date }) => {
         </User>
       </UserBox>
       <ButtonBox>
-        <GameStartButton>게임 시작하기</GameStartButton>
+        <GameStartButton onClick={handleGameClick}>
+          게임 시작하기
+        </GameStartButton>
       </ButtonBox>
     </GameBox>
   );
