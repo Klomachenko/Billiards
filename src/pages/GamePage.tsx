@@ -1,52 +1,118 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import styled from '@emotion/styled';
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import myPageIcon from '@mui/icons-material/PersonOutlineOutlined';
+import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi';
+import FooterTabButton from '../components/FooterTabButton';
 
 const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
   height: 100vh;
   max-height: 932px;
   max-width: 480px;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin: 0 auto;
+  background-color: #f6f6f6;
+  position: relative;
 `;
 
-const FullscreenImage = styled.img`
+const TextBox = styled.div`
+  display: flex;
+  width: 80%;
+  align-items: flex-start;
+`;
+
+const MainText = styled.h1`
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin: 0;
+  margin-bottom: 1.5rem;
+`;
+
+const Box = styled.div`
+  box-sizing: border-box;
   width: 100%;
-  height: 100%;
-  object-fit: scale-down;
-  cursor: pointer; /* 클릭 가능 표시 */
+  padding: 0 10%;
+  height: 70%;
+  display: flex;
+  overflow-y: auto;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const ProfileCard = styled.div`
+  width: 100%;
+  background-color: white;
+  border-radius: 8px;
+  box-sizing: border-box;
+  padding: 1.5rem;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+`;
+
+const StatItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: #5a5a5a;
+`;
+
+const StatTitle = styled.span`
+  font-weight: 500;
+`;
+
+const StatValue = styled.span`
+  font-weight: 700;
+  color: #303030;
+`;
+
+const ButtonBox = styled.div`
+  width: 100%;
+  height: 4.5rem;
+  background-color: #8dcf99;
+  position: absolute;
+  bottom: 0;
+  display: flex;
 `;
 
 const GamePage = () => {
-  const navigate = useNavigate();
-  const images = [
-    'https://private-user-images.githubusercontent.com/102893954/403512534-8287b2fb-1a01-4d2b-a5be-88a07d4b1ae5.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Mzc2Njg1MzksIm5iZiI6MTczNzY2ODIzOSwicGF0aCI6Ii8xMDI4OTM5NTQvNDAzNTEyNTM0LTgyODdiMmZiLTFhMDEtNGQyYi1hNWJlLTg4YTA3ZDRiMWFlNS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwMTIzJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDEyM1QyMTM3MTlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT01NDhhMDI4N2MyN2FlOWE3YjMxYmVjZjZhZDNmN2JjYzRjNDUxMTcxZmFjMmI0YjE1MmJhYzJkNDQ5YTQxMzVjJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.gfkcPU7JoqOzofi6q-ceQGO8gHUKVKAJtKArvFoqFCI', // 첫 번째 이미지
-    'https://private-user-images.githubusercontent.com/102893954/403512609-abb38035-7ad7-4f7c-8dc7-35104caf8778.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Mzc2Njg1MzksIm5iZiI6MTczNzY2ODIzOSwicGF0aCI6Ii8xMDI4OTM5NTQvNDAzNTEyNjA5LWFiYjM4MDM1LTdhZDctNGY3Yy04ZGM3LTM1MTA0Y2FmODc3OC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwMTIzJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDEyM1QyMTM3MTlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1jMTRkYmUzY2E4N2I2MjA1MTE5YmI0N2IyMTAyZWZiNzZhOTJlYjY5MmI0NWIxZWEyNTlkYTRhNDJlM2EyMjQ2JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.JGFHsWohKDy7O0oDLvYs3fdYMI94PBjXjV8os27l1ZE', // 두 번째 이미지
-    'https://private-user-images.githubusercontent.com/102893954/403513457-e91e59ac-082d-44de-946a-f633b95caff5.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Mzc2Njg1MzksIm5iZiI6MTczNzY2ODIzOSwicGF0aCI6Ii8xMDI4OTM5NTQvNDAzNTEzNDU3LWU5MWU1OWFjLTA4MmQtNDRkZS05NDZhLWY2MzNiOTVjYWZmNS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwMTIzJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDEyM1QyMTM3MTlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0wMzFlZmIyYjI4OGM4NTBjNzE5ZWE5MTA2YjgxODY5ZDMxMTA2YzVmYjhiNzE5NzE2ZWVhNGQ4MDMwNTI0ZmJkJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.tIO6ooPD01XJNQxR-2i8ELtR_ptUksySFTt6yMGfqCk', // 세 번째 이미지
-    'https://private-user-images.githubusercontent.com/102893954/403512794-c87baca6-5618-4c9e-978d-7680910c1343.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Mzc2Njg1MzksIm5iZiI6MTczNzY2ODIzOSwicGF0aCI6Ii8xMDI4OTM5NTQvNDAzNTEyNzk0LWM4N2JhY2E2LTU2MTgtNGM5ZS05NzhkLTc2ODA5MTBjMTM0My5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwMTIzJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDEyM1QyMTM3MTlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1mNGZhMzMwNTIwNTBhNWE0NWVhODlhMWVhMzA0NGU1ZmUwN2Q1ZGQ3NzQ2MDg0NmI3NzRlMWUzMzE4ODcxMjNiJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9._X4rXJBR2-dXxNU3ytUGQhyg7x_e1FzNne9LHMjNRSw', // 네 번째 이미지
-  ];
-
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  const handleImageClick = () => {
-    if (currentImageIndex < images.length - 1) {
-      // 다음 이미지로 이동
-      setCurrentImageIndex(currentImageIndex + 1);
-    } else {
-      // 마지막 이미지 클릭 시 /matching으로 이동
-      navigate('/matching');
-    }
-  };
-
   return (
     <Container>
-      <FullscreenImage
-        src={images[currentImageIndex]}
-        alt={`Step ${currentImageIndex + 1}`}
-        onClick={handleImageClick}
-      />
+      <TextBox>
+        <MainText>Profile</MainText>
+      </TextBox>
+      <Box>
+        <ProfileCard>
+          <StatItem>
+            <StatTitle>적정 점수</StatTitle>
+            <StatValue>오픈 예정입니다! 많은 관심 가져주세요!</StatValue>
+          </StatItem>
+        </ProfileCard>
+      </Box>
+
+      <ButtonBox>
+        <FooterTabButton
+          text='매칭 대기'
+          Icon={FormatListBulletedIcon}
+          url='matching'
+        />
+        <FooterTabButton
+          text='채팅창'
+          Icon={ChatBubbleOutlineIcon}
+          url='chat'
+        />
+        <FooterTabButton text='게임' Icon={SportsKabaddiIcon} url='game' />
+        <FooterTabButton text='my' Icon={myPageIcon} url='my' />
+      </ButtonBox>
     </Container>
   );
 };
