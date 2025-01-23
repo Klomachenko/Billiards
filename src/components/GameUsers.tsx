@@ -76,10 +76,10 @@ const GameStartButton = styled.button`
   border: none;
 `;
 
-const GameUsers = ({ myNickname, opponentNickname, winnerNickname }) => {
+const GameUsers = ({ myNickname, opponentNickname, winnerNickname, date }) => {
   return (
     <GameBox>
-      <DateBox>2025-01-23</DateBox>
+      <DateBox>{date}</DateBox>
       <UserBox>
         <User>
           <AccountCircleIcon fontSize='large' />

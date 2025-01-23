@@ -75,7 +75,16 @@ const GameListPage = () => {
     try {
       const response = await api.get('/games');
       console.log('게임목록 불러오기 성공', response.data.response);
-      setGames(response.data.response);
+
+      // date가 null이면 현재 날짜로 대체
+      const updatedGames = response.data.response.map((game) => ({
+        ...game,
+        date: game.date
+          ? new Date(game.date).toLocaleDateString() // 기존 값 형식 변환
+          : new Date().toLocaleDateString(), // null일 경우 현재 날짜
+      }));
+
+      setGames(updatedGames);
     } catch (err) {
       setError('서버 오류 발생, 재시도 바람');
       console.error(err);
@@ -99,6 +108,7 @@ const GameListPage = () => {
             myNickname={game.myNickname}
             opponentNickname={game.opponentNickname}
             winnerNickname={game.winnerNickname}
+            date={game.date}
           />
         ))}
       </Box>
