@@ -96,6 +96,11 @@ const MatchingListPage = () => {
 
   useEffect(() => {
     getMatchingList();
+    // const interval = setInterval(() => {
+    //   getMatchingList();
+    // }, 500); // 5초마다 요청
+
+    // return () => clearInterval(interval); // 컴포넌트 언마운트 시 정리
   }, []);
 
   return (
@@ -109,6 +114,7 @@ const MatchingListPage = () => {
             creatorUid={workSpace.creatorUid}
             key={workSpace.workspaceId}
             workspaceId={workSpace.workspaceId}
+            isOwn={workSpace.isOwn}
           />
         ))}
       </Box>
@@ -122,7 +128,7 @@ const MatchingListPage = () => {
         </JoinButtonBox>
 
         <FooterTabButton
-          text='매칭 대기 목록'
+          text='매칭 대기'
           Icon={FormatListBulletedIcon}
           url='matching'
         />
@@ -132,7 +138,7 @@ const MatchingListPage = () => {
           url='chat'
         />
         <FooterTabButton text='게임' Icon={SportsKabaddiIcon} url='game' />
-        <FooterTabButton text='my' Icon={myPageIcon} url='game' />
+        <FooterTabButton text='my' Icon={myPageIcon} url='my' />
       </ButtonBox>
     </Container>
   );

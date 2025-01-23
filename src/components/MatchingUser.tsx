@@ -2,7 +2,6 @@ import styled from '@emotion/styled';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MatchingButton from './MatchingButton.tsx';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import api from '../utils/axios_interceptor.ts';
 import { useState } from 'react';
 
@@ -11,6 +10,7 @@ const UserBox = styled.div`
   align-items: center;
   width: 100%;
   height: 2.25rem;
+  gap: 0.5625rem;
 `;
 
 const SubText = styled.p`
@@ -18,6 +18,16 @@ const SubText = styled.p`
   font-weight: 400;
   margin: 0;
   flex-grow: 1;
+`;
+
+const CheckMyself = styled.div`
+  width: 2.25rem;
+  height: 2.25rem;
+  color: #1e1e1e;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 interface MatchingUserProps {
@@ -50,7 +60,11 @@ const MatchingUser = ({
     <UserBox>
       <AccountCircleIcon fontSize='large' />
       <SubText>{creatorUid}</SubText>
-      {isOwn ? 'X' : <MatchingButton onClick={getChatroomId} />}
+      {isOwn ? (
+        <CheckMyself>X</CheckMyself>
+      ) : (
+        <MatchingButton onClick={getChatroomId} />
+      )}
     </UserBox>
   );
 };

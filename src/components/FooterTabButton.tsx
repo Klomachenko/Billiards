@@ -11,6 +11,7 @@ const ButtonBox = styled(NavLink)`
   cursor: pointer;
   text-decoration: none;
   color: black;
+  background-color: #bbefc5;
 `;
 
 const SubText = styled.p`

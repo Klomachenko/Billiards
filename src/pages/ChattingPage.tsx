@@ -104,7 +104,7 @@ const ChattingPage = () => {
       </Box>
       <ButtonBox>
         <FooterTabButton
-          text='매칭 대기 목록'
+          text='매칭 대기'
           Icon={FormatListBulletedIcon}
           url='matching'
         />

@@ -7,7 +7,7 @@ const JoinButton = styled.button`
   border-radius: 50%;
   border: 3px solid white;
   color: white;
-  background-color: #8dcf99;
+  background-color: #90d19c;
   cursor: pointer;
 `;
 

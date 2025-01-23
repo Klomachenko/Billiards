@@ -1,12 +1,9 @@
 import styled from '@emotion/styled';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import FooterTabButton from '../components/FooterTabButton';
-import api from '../utils/axios_interceptor';
-import { useEffect, useState } from 'react';
-import GameUsers from '../components/GameUsers';
 import myPageIcon from '@mui/icons-material/PersonOutlineOutlined';
 import SportsKabaddiIcon from '@mui/icons-material/SportsKabaddi';
+import FooterTabButton from '../components/FooterTabButton';
 
 const Container = styled.div`
   display: flex;
@@ -17,8 +14,8 @@ const Container = styled.div`
   max-height: 932px;
   max-width: 480px;
   margin: 0 auto;
-  position: relative;
   background-color: #f6f6f6;
+  position: relative;
 `;
 
 const TextBox = styled.div`
@@ -50,6 +47,34 @@ const Box = styled.div`
   }
 `;
 
+const ProfileCard = styled.div`
+  width: 100%;
+  background-color: white;
+  border-radius: 8px;
+  box-sizing: border-box;
+  padding: 1.5rem;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1.5rem;
+`;
+
+const StatItem = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: #5a5a5a;
+`;
+
+const StatTitle = styled.span`
+  font-weight: 500;
+`;
+
+const StatValue = styled.span`
+  font-weight: 700;
+  color: #303030;
+`;
+
 const ButtonBox = styled.div`
   width: 100%;
   height: 4.5rem;
@@ -59,59 +84,45 @@ const ButtonBox = styled.div`
   display: flex;
 `;
 
-const JoinButtonBox = styled.div`
-  position: absolute;
-  bottom: 4rem;
-  left: 50%;
-  transform: translate(-50%, 50%);
-  z-index: 1;
-`;
-
-const GameListPage = () => {
-  const [games, setGames] = useState([]);
-  const [error, setError] = useState('');
-
-  const getGameList = async () => {
-    try {
-      const response = await api.get('/games');
-      console.log('게임목록 불러오기 성공', response.data.response);
-
-      // date가 null이면 현재 날짜로 대체
-      const updatedGames = response.data.response.map((game) => ({
-        ...game,
-        date: game.date
-          ? new Date(game.date).toLocaleDateString() // 기존 값 형식 변환
-          : new Date().toLocaleDateString(), // null일 경우 현재 날짜
-      }));
-
-      setGames(updatedGames);
-    } catch (err) {
-      setError('서버 오류 발생, 재시도 바람');
-      console.error(err);
-    }
+const MyPage = () => {
+  const mockData = {
+    name: '감성돔',
+    wins: 10,
+    losses: 5,
+    average: 0.25,
+    score: 15,
   };
-
-  useEffect(() => {
-    getGameList();
-  }, []);
 
   return (
     <Container>
-      {/* <GameUsers /> */}
       <TextBox>
-        <MainText>게임 목록</MainText>
+        <MainText>Profile</MainText>
       </TextBox>
       <Box>
-        {games?.map((game) => (
-          <GameUsers
-            key={game.gameId}
-            myNickname={game.myNickname}
-            opponentNickname={game.opponentNickname}
-            winnerNickname={game.winnerNickname}
-            date={game.date}
-          />
-        ))}
+        <ProfileCard>
+          <StatItem>
+            <StatTitle>이름</StatTitle>
+            <StatValue>{mockData.name}</StatValue>
+          </StatItem>
+          <StatItem>
+            <StatTitle>승</StatTitle>
+            <StatValue>{mockData.wins}</StatValue>
+          </StatItem>
+          <StatItem>
+            <StatTitle>패</StatTitle>
+            <StatValue>{mockData.losses}</StatValue>
+          </StatItem>
+          <StatItem>
+            <StatTitle>당구 에버리지</StatTitle>
+            <StatValue>{mockData.average}</StatValue>
+          </StatItem>
+          <StatItem>
+            <StatTitle>적정 점수</StatTitle>
+            <StatValue>{mockData.score}</StatValue>
+          </StatItem>
+        </ProfileCard>
       </Box>
+
       <ButtonBox>
         <FooterTabButton
           text='매칭 대기'
@@ -124,10 +135,10 @@ const GameListPage = () => {
           url='chat'
         />
         <FooterTabButton text='게임' Icon={SportsKabaddiIcon} url='game' />
-        <FooterTabButton text='my' Icon={myPageIcon} url='game' />
+        <FooterTabButton text='my' Icon={myPageIcon} url='my' />
       </ButtonBox>
     </Container>
   );
 };
 
-export default GameListPage;
+export default MyPage;
