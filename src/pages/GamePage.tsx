@@ -59,7 +59,7 @@ const ProfileCard = styled.div`
 
 const StatItem = styled.div`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   margin-bottom: 1rem;
   font-size: 1rem;
@@ -88,12 +88,11 @@ const GamePage = () => {
   return (
     <Container>
       <TextBox>
-        <MainText>Profile</MainText>
+        <MainText>게임 진행</MainText>
       </TextBox>
       <Box>
         <ProfileCard>
           <StatItem>
-            <StatTitle>적정 점수</StatTitle>
             <StatValue>오픈 예정입니다! 많은 관심 가져주세요!</StatValue>
           </StatItem>
         </ProfileCard>
