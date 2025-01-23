@@ -23,9 +23,14 @@ const SubText = styled.p`
 interface MatchingUserProps {
   creatorUid: string;
   workspaceId: number;
+  isOwn: boolean;
 }
 
-const MatchingUser = ({ creatorUid, workspaceId }: MatchingUserProps) => {
+const MatchingUser = ({
+  creatorUid,
+  workspaceId,
+  isOwn,
+}: MatchingUserProps) => {
   const navigate = useNavigate();
   const [error, setError] = useState('');
 
@@ -45,7 +50,7 @@ const MatchingUser = ({ creatorUid, workspaceId }: MatchingUserProps) => {
     <UserBox>
       <AccountCircleIcon fontSize='large' />
       <SubText>{creatorUid}</SubText>
-      <MatchingButton onClick={getChatroomId} />
+      {isOwn ? 'X' : <MatchingButton onClick={getChatroomId} />}
     </UserBox>
   );
 };

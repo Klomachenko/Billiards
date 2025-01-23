@@ -1,23 +1,23 @@
 import styled from '@emotion/styled';
+import TextsmsOutlinedIcon from '@mui/icons-material/TextsmsOutlined';
 
 const CircleButton = styled.button`
   height: 2.25rem;
-  padding: 0.45rem;
+  /* padding: 0.45rem; */
   border-radius: 50%;
-  border: 1px solid black;
+  border: none;
   cursor: pointer;
-`;
-
-const SubText = styled.p`
-  font-size: 0.75rem;
-  font-weight: 400;
-  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
 `;
 
 const MatchingButton = ({ onClick }) => {
   return (
     <CircleButton onClick={onClick}>
-      <SubText>매칭</SubText>
+      {/* <SubText>매칭</SubText> */}
+      <TextsmsOutlinedIcon fontSize='medium' />
     </CircleButton>
   );
 };
